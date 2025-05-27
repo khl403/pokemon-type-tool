@@ -86,7 +86,6 @@
             border-radius: 0.5rem;
             font-size: 1.25rem; 
             font-weight: 700;
-            /* color: white;  플레이스홀더 텍스트 색상과 충돌 방지 위해 기본 색상 제거, 아이콘에 직접 적용 */
             text-align: center;
             margin-bottom: 1rem; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -94,29 +93,29 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem; 
-            min-height: 76px; /* 아이콘 포함 플레이스홀더 높이 확보 */
-            border: 2px dashed #cbd5e1; /* 기본으로 점선 테두리 표시 */
-            background-color: #f8fafc; /* 기본 배경색 약간 다르게 */
+            min-height: 76px; 
+            border: 2px dashed #cbd5e1; 
+            background-color: #f8fafc; 
         }
-        #selected-types-display-container.has-types { /* 타입이 선택되었을 때의 스타일 */
-            background-color: transparent; /* 타입 아이콘 배경색이 보이도록 */
+        #selected-types-display-container.has-types { 
+            background-color: transparent; 
             border-color: transparent;
         }
         #selected-types-display-container.drag-over {
-            border-color: #60a5fa !important; /* 드래그 오버 시 테두리 강조 */
-            background-color: #eff6ff !important; /* 드래그 오버 시 배경 강조 */
+            border-color: #60a5fa !important; 
+            background-color: #eff6ff !important; 
         }
-        .selected-type-placeholder-content { /* 플레이스홀더 내용물 스타일 */
+        .selected-type-placeholder-content { 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #94a3b8; /* Slate 400 */
+            color: #94a3b8; 
             font-size: 0.9rem;
             font-weight: normal;
         }
         .selected-type-placeholder-content svg {
-            width: 28px; /* 아이콘 크기 조정 */
+            width: 28px; 
             height: 28px;
             margin-bottom: 0.25rem;
             stroke-width: 1.5;
@@ -335,7 +334,6 @@
 
         const infoContainerWrapper = document.getElementById('info-container-wrapper');
         
-        // 플레이스홀더 내용물 생성 함수
         function createPlaceholderElement() {
             const placeholderDiv = document.createElement('div');
             placeholderDiv.classList.add('selected-type-placeholder-content');
@@ -344,9 +342,7 @@
             svgIcon.setAttribute('fill', 'none');
             svgIcon.setAttribute('viewBox', '0 0 24 24');
             svgIcon.setAttribute('stroke', 'currentColor');
-            // Tailwind heroicons 'CloudArrowDownIcon' (outline) or similar
             svgIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.338-2.32 5.75 5.75 0 011.046 11.098A1.5 1.5 0 0018 19.5H6.75z" />';
-
 
             const textSpan = document.createElement('span');
             textSpan.textContent = '타입 아이콘을 이곳으로 드래그하거나 클릭하여 선택하세요.';
@@ -356,7 +352,6 @@
             return placeholderDiv;
         }
         const selectedTypesPlaceholderOriginal = createPlaceholderElement();
-
 
         let selectedTypes = []; 
         let dropOccurredOnValidTarget = false; 
@@ -471,11 +466,11 @@
         function updateSelectedTypesDisplay() {
             selectedTypesContainer.innerHTML = ''; 
             if (selectedTypes.length > 0) {
-                selectedTypesContainer.classList.add('has-types'); // 타입 선택 시 클래스 추가
+                selectedTypesContainer.classList.add('has-types'); 
                 const icon1 = createTypeIconElement(selectedTypes[0], true, true, true, false); 
                 selectedTypesContainer.appendChild(icon1);
             } else {
-                selectedTypesContainer.classList.remove('has-types'); // 타입 없을 시 클래스 제거
+                selectedTypesContainer.classList.remove('has-types'); 
             }
 
             if (selectedTypes.length > 1) {
@@ -606,9 +601,9 @@
                 });
             } else {
                 attackingSubsectionsContainer.classList.remove('md:grid-cols-2');
-                attackingSubsectionsContainer.classList.add('md:grid-cols-1'); // 단일 타입 시 하나의 컬럼만 사용하도록
+                attackingSubsectionsContainer.classList.add('md:grid-cols-1'); 
                 attackingType2Details.classList.add('hidden'); 
-                attackingType1Details.classList.remove('md:col-span-2'); // 단일 타입일 때는 col-span-2 필요 없음
+                attackingType1Details.classList.remove('md:col-span-2'); 
                 attackingType2Title.innerHTML = ''; 
             }
 
@@ -655,9 +650,10 @@
                 });
             }
             
-            if (infoContainerWrapper.getBoundingClientRect().top < 0 || infoContainerWrapper.getBoundingClientRect().bottom > window.innerHeight) {
-                 infoContainerWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            // 자동 스크롤 기능 제거
+            // if (infoContainerWrapper.getBoundingClientRect().top < 0 || infoContainerWrapper.getBoundingClientRect().bottom > window.innerHeight) {
+            //      infoContainerWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // }
         }
 
         function renderInitialTypes() {
@@ -666,8 +662,8 @@
                 if (icon) initialTypesDisplay.appendChild(icon);
             });
             selectedTypesContainer.innerHTML = '';
-            selectedTypesContainer.appendChild(selectedTypesPlaceholderOriginal.cloneNode(true)); // 초기 플레이스홀더 설정
-            selectedTypesContainer.classList.remove('has-types'); // 초기에는 타입 없는 상태
+            selectedTypesContainer.appendChild(selectedTypesPlaceholderOriginal.cloneNode(true)); 
+            selectedTypesContainer.classList.remove('has-types'); 
         }
 
         document.addEventListener('DOMContentLoaded', renderInitialTypes);
