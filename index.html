@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3182004757080506"
+     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokémon Go 타입 상성 계산기</title>
@@ -26,6 +28,7 @@
             color: #4a5568; 
             border-radius: 0.5rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            min-height: 50px; 
         }
         #ad-banner-top {
             margin-bottom: 1.5rem; 
@@ -45,6 +48,15 @@
             min-width: 80px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             user-select: none; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .type-icon.small-icon { 
+            padding: 0.2rem 0.5rem;
+            min-width: auto;
+            font-size: 0.9em;
+            margin-right: 0.5em; 
         }
         .type-icon:hover, .type-icon:focus {
             transform: translateY(-2px);
@@ -74,7 +86,7 @@
             border-radius: 0.5rem;
             font-size: 1.25rem; 
             font-weight: 700;
-            color: white;
+            /* color: white;  플레이스홀더 텍스트 색상과 충돌 방지 위해 기본 색상 제거, 아이콘에 직접 적용 */
             text-align: center;
             margin-bottom: 1rem; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -82,16 +94,32 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem; 
-            min-height: 60px; 
-            border: 2px dashed transparent; 
+            min-height: 76px; /* 아이콘 포함 플레이스홀더 높이 확보 */
+            border: 2px dashed #cbd5e1; /* 기본으로 점선 테두리 표시 */
+            background-color: #f8fafc; /* 기본 배경색 약간 다르게 */
+        }
+        #selected-types-display-container.has-types { /* 타입이 선택되었을 때의 스타일 */
+            background-color: transparent; /* 타입 아이콘 배경색이 보이도록 */
+            border-color: transparent;
         }
         #selected-types-display-container.drag-over {
-            border-color: #60a5fa; 
-            background-color: #eff6ff; 
+            border-color: #60a5fa !important; /* 드래그 오버 시 테두리 강조 */
+            background-color: #eff6ff !important; /* 드래그 오버 시 배경 강조 */
         }
-        .selected-type-placeholder {
-            color: #6b7280; 
-            font-style: italic;
+        .selected-type-placeholder-content { /* 플레이스홀더 내용물 스타일 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8; /* Slate 400 */
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+        .selected-type-placeholder-content svg {
+            width: 28px; /* 아이콘 크기 조정 */
+            height: 28px;
+            margin-bottom: 0.25rem;
+            stroke-width: 1.5;
         }
         .multiplier {
             padding: 0.2em 0.5em;
@@ -105,7 +133,6 @@
         .two-x { background-color: #f97316; } 
         .half-x { background-color: #84cc16; } 
         .quarter-x { background-color: #22c55e; } 
-        .zero-x { background-color: #64748b; } 
 
         .initial-types-container, .info-container-wrapper {
             background-color: white;
@@ -118,18 +145,37 @@
             background-color: #f9fafb;
             padding: 1rem;
             border-radius: 0.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem; 
             border: 1px solid #e5e7eb;
         }
-        .info-category > h3 {
-            font-size: 1.25rem;
+        .info-category > h3.main-category-title { 
+            font-size: 1.25rem; 
             font-weight: 700;
             color: #1f2937;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem; 
             padding-bottom: 0.5rem;
             border-bottom: 2px solid #d1d5db;
+            display: flex; 
+            align-items: center;
+        }
+         .attacking-subsection {
+            padding: 0.75rem; 
+            border: 1px solid #e5e7eb; 
+            border-radius: 0.5rem; 
+            background-color: #ffffff; 
+         }
+         .attacking-subsection h3 { 
+            font-size: 1.1rem; 
+            font-weight: 600; 
+            color: #111827; 
+            margin-bottom: 0.75rem; 
+            display: flex; 
+            align-items: center;
         }
         .hidden {
+            display: none !important;
+        }
+        .section-0x-hidden { 
             display: none !important;
         }
     </style>
@@ -139,7 +185,6 @@
         <div id="ad-banner-top" class="ad-banner-area">
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3182004757080506"
      crossorigin="anonymous"></script>
-<!-- poke-type-top-banner -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3182004757080506"
@@ -154,8 +199,7 @@
         <header class="text-center mb-8">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Pokémon 듀얼 타입 상성 계산기</h1>
             <p class="text-gray-600 mt-2">
-                첫 번째 타입을 클릭하고, 두 번째 타입은 드래그하여 위 선택된 타입 영역에 놓으세요.<br>
-                선택된 타입은 영역 바깥으로 드래그하여 제거할 수 있습니다.
+                아래 타입 목록에서 아이콘을 클릭하거나 위 선택 영역으로 드래그하여 타입을 지정하세요.
             </p>
         </header>
 
@@ -167,30 +211,49 @@
         
         <div id="selected-types-area" class="text-center mb-6"> 
              <div id="selected-types-display-container">
-                <span class="selected-type-placeholder">첫 번째 타입을 클릭하세요</span>
                 </div>
-            </div>
+        </div>
 
         <div id="info-container-wrapper" class="info-container-wrapper hidden">
-            <div class="grid md:grid-cols-2 gap-6">
-                <div id="attacking-info" class="info-category">
-                    <h3 class="text-xl font-semibold mb-3">공격 시</h3>
-                    <div class="info-section mb-4">
-                        <h4><span class="multiplier two-x">2x</span> 효과가 굉장했다!</h4>
-                        <div id="super-effective-against" class="type-list"></div>
-                    </div>
-                    <div class="info-section mb-4">
-                        <h4><span class="multiplier half-x">0.5x</span> 효과가 별로인 듯하다...</h4>
-                        <div id="not-very-effective-against" class="type-list"></div>
-                    </div>
-                    <div class="info-section">
-                        <h4><span class="multiplier zero-x">0x</span> 효과가 없는 것 같다...</h4>
-                        <div id="no-effect-against" class="type-list"></div>
+            <div class="grid grid-cols-1 gap-0"> 
+                <div id="attacking-info-main" class="info-category"> 
+                    <h3 id="attacking-main-title" class="text-xl font-semibold mb-3 main-category-title">공격 시</h3>
+                    
+                    <div id="attacking-subsections-container" class="grid md:grid-cols-2 gap-4">
+                        <div id="attacking-type1-details" class="attacking-subsection hidden"> 
+                            <h3 id="attacking-type1-title"></h3> 
+                            <div class="info-section mb-4">
+                                <h4><span class="multiplier two-x">2x</span> 효과가 굉장했다!</h4>
+                                <div id="super-effective-against-type1" class="type-list"></div>
+                            </div>
+                            <div class="info-section mb-4">
+                                <h4><span class="multiplier half-x">0.5x</span> 효과가 별로인 듯하다...</h4>
+                                <div id="not-very-effective-against-type1" class="type-list"></div>
+                            </div>
+                            <div class="info-section section-0x-hidden"> <h4><span class="multiplier zero-x">0x</span> 효과가 없는 것 같다...</h4>
+                                <div id="no-effect-against-type1" class="type-list"></div>
+                            </div>
+                        </div>
+
+                        <div id="attacking-type2-details" class="attacking-subsection hidden"> 
+                            <h3 id="attacking-type2-title"></h3> 
+                            <div class="info-section mb-4">
+                                <h4><span class="multiplier two-x">2x</span> 효과가 굉장했다!</h4>
+                                <div id="super-effective-against-type2" class="type-list"></div>
+                            </div>
+                            <div class="info-section mb-4">
+                                <h4><span class="multiplier half-x">0.5x</span> 효과가 별로인 듯하다...</h4>
+                                <div id="not-very-effective-against-type2" class="type-list"></div>
+                            </div>
+                            <div class="info-section section-0x-hidden"> <h4><span class="multiplier zero-x">0x</span> 효과가 없는 것 같다...</h4>
+                                <div id="no-effect-against-type2" class="type-list"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div id="defending-info" class="info-category">
-                    <h3 class="text-xl font-semibold mb-3">방어 시</h3>
+                <div id="defending-info" class="info-category"> 
+                    <h3 id="defending-info-title" class="text-xl font-semibold mb-3 main-category-title">방어 시</h3>
                     <div class="info-section mb-4">
                         <h4><span class="multiplier four-x">4x</span> 치명적 약점!</h4>
                         <div id="ultra-weak-to" class="type-list"></div>
@@ -207,17 +270,15 @@
                         <h4><span class="multiplier quarter-x">0.25x</span> 강력한 저항!</h4>
                         <div id="ultra-resistant-to" class="type-list"></div>
                     </div>
-                    <div class="info-section">
-                        <h4><span class="multiplier zero-x">0x</span> 무효</h4>
+                    <div class="info-section section-0x-hidden"> <h4><span class="multiplier zero-x">0x</span> 무효</h4>
                         <div id="immune-to" class="type-list"></div>
                     </div>
                 </div>
             </div>
         </div>
          <div id="ad-banner-bottom" class="ad-banner-area">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3182004757080506"
+             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3182004757080506"
      crossorigin="anonymous"></script>
-<!-- poke-type-bottom-banner -->
 <ins class="adsbygoogle"
      style="display:block"
      data-ad-client="ca-pub-3182004757080506"
@@ -255,25 +316,52 @@
         const initialTypesDisplay = document.getElementById('initial-types-display');
         const selectedTypesContainer = document.getElementById('selected-types-display-container');
         
-        const superEffectiveAgainstDisplay = document.getElementById('super-effective-against');
-        const notVeryEffectiveAgainstDisplay = document.getElementById('not-very-effective-against');
-        const noEffectAgainstDisplay = document.getElementById('no-effect-against');
+        const attackingMainTitle = document.getElementById('attacking-main-title');
+        const attackingType1Details = document.getElementById('attacking-type1-details');
+        const attackingType1Title = document.getElementById('attacking-type1-title');
+        const superEffectiveAgainstType1Display = document.getElementById('super-effective-against-type1');
+        const notVeryEffectiveAgainstType1Display = document.getElementById('not-very-effective-against-type1');
+
+        const attackingType2Details = document.getElementById('attacking-type2-details');
+        const attackingType2Title = document.getElementById('attacking-type2-title');
+        const superEffectiveAgainstType2Display = document.getElementById('super-effective-against-type2');
+        const notVeryEffectiveAgainstType2Display = document.getElementById('not-very-effective-against-type2');
         
+        const defendingInfoTitle = document.getElementById('defending-info-title');
         const ultraWeakToDisplay = document.getElementById('ultra-weak-to');
         const weakToDisplay = document.getElementById('weak-to');
         const resistantToDisplay = document.getElementById('resistant-to');
         const ultraResistantToDisplay = document.getElementById('ultra-resistant-to');
-        const immuneToDisplay = document.getElementById('immune-to');
 
         const infoContainerWrapper = document.getElementById('info-container-wrapper');
-        const selectedTypesPlaceholderOriginal = document.createElement('span');
-        selectedTypesPlaceholderOriginal.classList.add('selected-type-placeholder');
-        selectedTypesPlaceholderOriginal.textContent = '첫 번째 타입을 클릭하세요';
+        
+        // 플레이스홀더 내용물 생성 함수
+        function createPlaceholderElement() {
+            const placeholderDiv = document.createElement('div');
+            placeholderDiv.classList.add('selected-type-placeholder-content');
+            
+            const svgIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svgIcon.setAttribute('fill', 'none');
+            svgIcon.setAttribute('viewBox', '0 0 24 24');
+            svgIcon.setAttribute('stroke', 'currentColor');
+            // Tailwind heroicons 'CloudArrowDownIcon' (outline) or similar
+            svgIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.338-2.32 5.75 5.75 0 011.046 11.098A1.5 1.5 0 0018 19.5H6.75z" />';
+
+
+            const textSpan = document.createElement('span');
+            textSpan.textContent = '타입 아이콘을 이곳으로 드래그하거나 클릭하여 선택하세요.';
+            
+            placeholderDiv.appendChild(svgIcon);
+            placeholderDiv.appendChild(textSpan);
+            return placeholderDiv;
+        }
+        const selectedTypesPlaceholderOriginal = createPlaceholderElement();
+
 
         let selectedTypes = []; 
         let dropOccurredOnValidTarget = false; 
         window.isCurrentlyDraggingSelectedIcon = false; 
-        let currentlyDraggedKeyFromSelected = null; // 드래그 중인 선택된 타입의 키를 저장
+        let currentlyDraggedKeyFromSelected = null; 
 
         function getTextColorForBackground(hexColor) {
             const r = parseInt(hexColor.slice(1, 3), 16);
@@ -283,21 +371,23 @@
             return brightness > 128 ? '#333333' : '#FFFFFF';
         }
 
-        function createTypeIconElement(typeKey, isInteractiveOnClick = true, isSmall = false, isDraggableForSelectedArea = false) {
+        function createTypeIconElement(typeKey, isInteractiveOnClick = true, isSmall = false, isDraggableForSelectedArea = false, isForTitle = false) {
             const typeInfo = TYPE_CHART_DATA[typeKey];
             if (!typeInfo) return null;
 
             const icon = document.createElement('div');
             icon.classList.add('type-icon');
-            icon.setAttribute('role', 'button'); 
-            icon.setAttribute('tabindex', '0');  
-            icon.setAttribute('aria-label', `${typeInfo.name} 타입`); 
-
-            if (isSmall) {
+            if (isForTitle) { 
+                icon.classList.add('small-icon');
+            } else if (isSmall) { 
                 icon.style.padding = '0.25rem 0.5rem';
                 icon.style.fontSize = '0.875rem';
                 icon.style.minWidth = '60px';
             }
+            
+            icon.setAttribute('role', 'button'); 
+            icon.setAttribute('tabindex', '0');  
+            icon.setAttribute('aria-label', `${typeInfo.name} 타입`); 
             icon.textContent = typeInfo.name;
             icon.style.backgroundColor = typeInfo.color;
             icon.style.color = getTextColorForBackground(typeInfo.color);
@@ -313,7 +403,7 @@
                 });
             }
             
-            if (!isDraggableForSelectedArea && isInteractiveOnClick) { 
+            if (!isDraggableForSelectedArea && isInteractiveOnClick && !isForTitle) { 
                 icon.setAttribute('draggable', 'true');
                 icon.addEventListener('dragstart', (event) => {
                     event.dataTransfer.setData('text/plain', typeKey); 
@@ -326,11 +416,11 @@
                 });
             }
 
-            if (isDraggableForSelectedArea) {
+            if (isDraggableForSelectedArea && !isForTitle) {
                 icon.setAttribute('draggable', 'true');
                 icon.addEventListener('dragstart', (event) => {
-                    // event.dataTransfer.setData('draggedTypeKeyFromSelected', typeKey); // Keep for potential other consumers if any
-                    currentlyDraggedKeyFromSelected = typeKey; // Store in variable for reliable access in dragend
+                    currentlyDraggedKeyFromSelected = typeKey; 
+                    event.dataTransfer.setData('draggedTypeKeyFromSelected', typeKey); 
                     event.dataTransfer.effectAllowed = 'move';
                     event.target.classList.add('dragging');
                     window.isCurrentlyDraggingSelectedIcon = true; 
@@ -340,7 +430,7 @@
                     
                     if (window.isCurrentlyDraggingSelectedIcon && !dropOccurredOnValidTarget) { 
                         const draggedKey = currentlyDraggedKeyFromSelected; 
-                        if (draggedKey) { // Check if a key was actually stored
+                        if (draggedKey) { 
                             const indexToRemove = selectedTypes.indexOf(draggedKey);
 
                             if (indexToRemove === 0) { 
@@ -354,7 +444,7 @@
                     }
                     window.isCurrentlyDraggingSelectedIcon = false; 
                     dropOccurredOnValidTarget = false; 
-                    currentlyDraggedKeyFromSelected = null; // Reset the stored key
+                    currentlyDraggedKeyFromSelected = null; 
                 });
             }
             return icon;
@@ -381,11 +471,15 @@
         function updateSelectedTypesDisplay() {
             selectedTypesContainer.innerHTML = ''; 
             if (selectedTypes.length > 0) {
-                const icon1 = createTypeIconElement(selectedTypes[0], false, true, true); 
+                selectedTypesContainer.classList.add('has-types'); // 타입 선택 시 클래스 추가
+                const icon1 = createTypeIconElement(selectedTypes[0], true, true, true, false); 
                 selectedTypesContainer.appendChild(icon1);
+            } else {
+                selectedTypesContainer.classList.remove('has-types'); // 타입 없을 시 클래스 제거
             }
+
             if (selectedTypes.length > 1) {
-                const icon2 = createTypeIconElement(selectedTypes[1], false, true, true);
+                const icon2 = createTypeIconElement(selectedTypes[1], true, true, true, false);
                 selectedTypesContainer.appendChild(icon2);
             }
 
@@ -415,17 +509,14 @@
             selectedTypesContainer.classList.remove('drag-over');
             
             const droppedKeyFromInitialList = event.dataTransfer.getData('text/plain');
-            // const draggedKeyFromSelectedArea = event.dataTransfer.getData('draggedTypeKeyFromSelected'); // No longer primary way to get this
-            const draggedKeyFromSelectedArea = currentlyDraggedKeyFromSelected; // Check if a selected icon was being dragged
+            const draggedKeyFromSelected = currentlyDraggedKeyFromSelected; 
 
-            if (window.isCurrentlyDraggingSelectedIcon && draggedKeyFromSelectedArea) { 
-                // This means a selected icon was dropped (likely back) onto the selectedTypesContainer
+            if (window.isCurrentlyDraggingSelectedIcon && draggedKeyFromSelected) { 
                 dropOccurredOnValidTarget = true; 
-                // No change to selectedTypes needed if just dropped back, unless reordering is implemented
                 return; 
             }
 
-            if (droppedKeyFromInitialList) { // An icon from the initial list was dropped
+            if (droppedKeyFromInitialList) { 
                 dropOccurredOnValidTarget = true; 
                 if (selectedTypes.length === 0) {
                     selectedTypes.push(droppedKeyFromInitialList);
@@ -446,6 +537,8 @@
         function displayTypeEffectiveness() {
             if (selectedTypes.length === 0) { 
                 infoContainerWrapper.classList.add('hidden');
+                attackingType1Details.classList.add('hidden'); 
+                attackingType2Details.classList.add('hidden'); 
                 return;
             }
             infoContainerWrapper.classList.remove('hidden');
@@ -453,41 +546,114 @@
             const currentType1 = selectedTypes[0];
             const currentType2 = selectedTypes.length > 1 ? selectedTypes[1] : null;
 
-            [superEffectiveAgainstDisplay, notVeryEffectiveAgainstDisplay, noEffectAgainstDisplay,
-             ultraWeakToDisplay, weakToDisplay, resistantToDisplay, ultraResistantToDisplay, immuneToDisplay]
-             .forEach(display => display.innerHTML = '');
+            [superEffectiveAgainstType1Display, notVeryEffectiveAgainstType1Display,
+             superEffectiveAgainstType2Display, notVeryEffectiveAgainstType2Display,
+             ultraWeakToDisplay, weakToDisplay, resistantToDisplay, ultraResistantToDisplay
+            ].forEach(display => display.innerHTML = '');
+            
+            attackingMainTitle.innerHTML = '공격 시 '; 
+            if (selectedTypes.length > 0) {
+                const titleIcon1 = createTypeIconElement(selectedTypes[0], false, false, false, true);
+                if (titleIcon1) attackingMainTitle.appendChild(titleIcon1);
+            }
+            if (selectedTypes.length > 1) {
+                const titleIcon2 = createTypeIconElement(selectedTypes[1], false, false, false, true);
+                if (titleIcon2) attackingMainTitle.appendChild(titleIcon2);
+            }
 
             const allTypeKeys = Object.keys(TYPE_CHART_DATA);
 
-            const attackerData = TYPE_CHART_DATA[currentType1];
+            // --- Attacking Info for Type 1 ---
+            attackingType1Details.classList.remove('hidden');
+            attackingType1Title.innerHTML = ''; 
+            const icon1Display = createTypeIconElement(currentType1, false, false, false, true); 
+            if (icon1Display) attackingType1Title.appendChild(icon1Display);
+            
+            const attackerData1 = TYPE_CHART_DATA[currentType1];
             allTypeKeys.forEach(targetTypeKey => {
-                const multiplier = attackerData.attacks[targetTypeKey] === undefined ? 1 : attackerData.attacks[targetTypeKey];
-                const icon = createTypeIconElement(targetTypeKey, true, true, false); 
+                const multiplier = attackerData1.attacks[targetTypeKey] === undefined ? 1 : attackerData1.attacks[targetTypeKey];
+                if (multiplier === 0) return; 
+
+                const icon = createTypeIconElement(targetTypeKey, true, true, false, false); 
                 if (!icon) return;
 
-                if (multiplier === 2) superEffectiveAgainstDisplay.appendChild(icon);
-                else if (multiplier === 0.5) notVeryEffectiveAgainstDisplay.appendChild(icon);
-                else if (multiplier === 0) noEffectAgainstDisplay.appendChild(icon);
+                if (multiplier === 2) superEffectiveAgainstType1Display.appendChild(icon);
+                else if (multiplier === 0.5) notVeryEffectiveAgainstType1Display.appendChild(icon);
             });
 
-            allTypeKeys.forEach(attackingTypeKey => {
-                const attackingTypeInfo = TYPE_CHART_DATA[attackingTypeKey];
-                let finalMultiplier = attackingTypeInfo.attacks[currentType1] === undefined ? 1 : attackingTypeInfo.attacks[currentType1];
+            // --- Attacking Info for Type 2 (if exists) ---
+            const attackingSubsectionsContainer = document.getElementById('attacking-subsections-container');
+            if (currentType2) {
+                attackingSubsectionsContainer.classList.remove('md:grid-cols-1');
+                attackingSubsectionsContainer.classList.add('md:grid-cols-2');
+                attackingType2Details.classList.remove('hidden');
+                attackingType1Details.classList.remove('md:col-span-2'); 
 
-                if (currentType2) { 
+                attackingType2Title.innerHTML = ''; 
+                const icon2Display = createTypeIconElement(currentType2, false, false, false, true); 
+                if (icon2Display) attackingType2Title.appendChild(icon2Display);
+
+                const attackerData2 = TYPE_CHART_DATA[currentType2];
+                allTypeKeys.forEach(targetTypeKey => {
+                    const multiplier = attackerData2.attacks[targetTypeKey] === undefined ? 1 : attackerData2.attacks[targetTypeKey];
+                    if (multiplier === 0) return; 
+                    
+                    const icon = createTypeIconElement(targetTypeKey, true, true, false, false); 
+                    if (!icon) return;
+
+                    if (multiplier === 2) superEffectiveAgainstType2Display.appendChild(icon);
+                    else if (multiplier === 0.5) notVeryEffectiveAgainstType2Display.appendChild(icon);
+                });
+            } else {
+                attackingSubsectionsContainer.classList.remove('md:grid-cols-2');
+                attackingSubsectionsContainer.classList.add('md:grid-cols-1'); // 단일 타입 시 하나의 컬럼만 사용하도록
+                attackingType2Details.classList.add('hidden'); 
+                attackingType1Details.classList.remove('md:col-span-2'); // 단일 타입일 때는 col-span-2 필요 없음
+                attackingType2Title.innerHTML = ''; 
+            }
+
+            // --- Defending Info ---
+            defendingInfoTitle.innerHTML = ''; 
+            const defendingTitleTextNode = document.createTextNode('방어 시 ');
+            defendingInfoTitle.appendChild(defendingTitleTextNode);
+
+            const defIcon1 = createTypeIconElement(currentType1, false, false, false, true);
+            if (defIcon1) defendingInfoTitle.appendChild(defIcon1);
+            
+            if (currentType2) { 
+                const defIcon2 = createTypeIconElement(currentType2, false, false, false, true);
+                if (defIcon2) defendingInfoTitle.appendChild(defIcon2);
+
+                allTypeKeys.forEach(attackingTypeKey => {
+                    const attackingTypeInfo = TYPE_CHART_DATA[attackingTypeKey];
+                    let finalMultiplier = attackingTypeInfo.attacks[currentType1] === undefined ? 1 : attackingTypeInfo.attacks[currentType1];
                     const multiplier2 = attackingTypeInfo.attacks[currentType2] === undefined ? 1 : attackingTypeInfo.attacks[currentType2];
                     finalMultiplier *= multiplier2;
-                }
-                
-                const icon = createTypeIconElement(attackingTypeKey, true, true, false);
-                if (!icon) return;
+                    
+                    if (finalMultiplier === 0) return; 
 
-                if (finalMultiplier === 4) ultraWeakToDisplay.appendChild(icon);
-                else if (finalMultiplier === 2) weakToDisplay.appendChild(icon);
-                else if (finalMultiplier === 0.5) resistantToDisplay.appendChild(icon);
-                else if (finalMultiplier === 0.25) ultraResistantToDisplay.appendChild(icon);
-                else if (finalMultiplier === 0) immuneToDisplay.appendChild(icon);
-            });
+                    const icon = createTypeIconElement(attackingTypeKey, true, true, false, false);
+                    if (!icon) return;
+
+                    if (finalMultiplier === 4) ultraWeakToDisplay.appendChild(icon);
+                    else if (finalMultiplier === 2) weakToDisplay.appendChild(icon);
+                    else if (finalMultiplier === 0.5) resistantToDisplay.appendChild(icon);
+                    else if (finalMultiplier === 0.25) ultraResistantToDisplay.appendChild(icon);
+                });
+            } else { 
+                allTypeKeys.forEach(attackingTypeKey => {
+                    const attackingTypeInfo = TYPE_CHART_DATA[attackingTypeKey];
+                    const finalMultiplier = attackingTypeInfo.attacks[currentType1] === undefined ? 1 : attackingTypeInfo.attacks[currentType1];
+                    
+                    if (finalMultiplier === 0) return; 
+
+                    const icon = createTypeIconElement(attackingTypeKey, true, true, false, false);
+                    if (!icon) return;
+
+                    if (finalMultiplier === 2) weakToDisplay.appendChild(icon);
+                    else if (finalMultiplier === 0.5) resistantToDisplay.appendChild(icon);
+                });
+            }
             
             if (infoContainerWrapper.getBoundingClientRect().top < 0 || infoContainerWrapper.getBoundingClientRect().bottom > window.innerHeight) {
                  infoContainerWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -496,11 +662,12 @@
 
         function renderInitialTypes() {
             Object.keys(TYPE_CHART_DATA).forEach(typeKey => {
-                const icon = createTypeIconElement(typeKey, true, false, false); 
+                const icon = createTypeIconElement(typeKey, true, false, false, false); 
                 if (icon) initialTypesDisplay.appendChild(icon);
             });
             selectedTypesContainer.innerHTML = '';
-            selectedTypesContainer.appendChild(selectedTypesPlaceholderOriginal.cloneNode(true));
+            selectedTypesContainer.appendChild(selectedTypesPlaceholderOriginal.cloneNode(true)); // 초기 플레이스홀더 설정
+            selectedTypesContainer.classList.remove('has-types'); // 초기에는 타입 없는 상태
         }
 
         document.addEventListener('DOMContentLoaded', renderInitialTypes);
