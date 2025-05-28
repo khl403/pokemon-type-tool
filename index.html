@@ -113,27 +113,20 @@
             font-size: 0.8rem;
         }
 
-        .type-icon-container.small .type-icon-img { /* 결과 목록 아이콘 */
+        .type-icon-container.small .type-icon-img { 
             height: 24px;
         }
         .type-icon-container.small .type-icon-text {
             font-size: 0.7rem;
         }
         
-        .type-icon-container.title-icon { /* 제목 옆 아이콘 컨테이너 */
-             flex-direction: row; /* 아이콘과 텍스트를 가로로 배열 (필요 시) */
-             min-width: auto;
-             padding: 0;
-             margin-right: 0.5em; /* 아이콘 간 간격 */
-        }
-        .type-icon-container.title-icon .type-icon-img {
+        .type-icon-container.title-icon .type-icon-img { 
              height: 24px;
-             margin-bottom: 0; 
-             margin-right: 0; /* 텍스트가 없으므로 오른쪽 마진 제거 */
+             margin-bottom: 0;
+             margin-right: 0.5em;
         }
         .type-icon-container.title-icon .type-icon-text {
-            /* 제목 아이콘 옆에는 텍스트를 표시하지 않거나, 필요시 별도 스타일링 */
-            display: none; 
+            display: none;
         }
 
 
@@ -410,7 +403,7 @@
         let selectedTypes = []; 
         const epsilon = 0.00001; 
 
-        function createTypeIconElement(typeKey, isInteractiveOnClick = true, context = 'default') {
+        function createTypeIconElement(typeKey, isInteractiveOnClick = true, context = 'default', isFromResultListParam = false) {
             const typeInfo = TYPE_CHART_DATA[typeKey];
             if (!typeInfo) return null;
 
@@ -445,7 +438,6 @@
 
             container.appendChild(img);
 
-            // For 'title' context, we don't add the text span below the image
             if (context !== 'title') { 
                 const textSpan = document.createElement('span');
                 textSpan.classList.add('type-icon-text');
@@ -453,30 +445,42 @@
                 container.appendChild(textSpan);
             }
 
-
             if (isInteractiveOnClick) { 
-                container.addEventListener('click', () => handleTypeClick(typeKey));
+                container.addEventListener('click', () => {
+                    handleTypeClick(typeKey, isFromResultListParam);
+                });
                 container.addEventListener('keydown', (event) => { 
                     if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault();
-                        handleTypeClick(typeKey);
+                        handleTypeClick(typeKey, isFromResultListParam);
                     }
                 });
             }
             return container;
         }
         
-        function handleTypeClick(typeKey) { 
-            const typeIndex = selectedTypes.indexOf(typeKey);
-
-            if (typeIndex > -1) { 
-                selectedTypes.splice(typeIndex, 1);
-            } else { 
-                if (selectedTypes.length < 2) { 
-                    selectedTypes.push(typeKey);
+        function handleTypeClick(typeKey, isFromResultList = false) { 
+            if (isFromResultList) {
+                if (selectedTypes.length === 1) {
+                    if (selectedTypes[0] !== typeKey) { 
+                        selectedTypes.push(typeKey);
+                    }
+                } else if (selectedTypes.length === 2) {
+                    selectedTypes = [typeKey]; 
                 } else { 
-                    selectedTypes.shift();
-                    selectedTypes.push(typeKey);
+                     selectedTypes = [typeKey];
+                }
+            } else { 
+                const typeIndex = selectedTypes.indexOf(typeKey);
+                if (typeIndex > -1) { 
+                    selectedTypes.splice(typeIndex, 1);
+                } else { 
+                    if (selectedTypes.length < 2) {
+                        selectedTypes.push(typeKey);
+                    } else { 
+                        selectedTypes.shift();
+                        selectedTypes.push(typeKey);
+                    }
                 }
             }
             updateSelectedTypesDisplay();
@@ -488,8 +492,8 @@
             if (selectedTypes.length > 0) {
                 selectedTypesContainer.classList.add('has-types'); 
                 selectedTypes.forEach(typeKey => {
-                    // Pass 'large' context for selected types display
-                    const icon = createTypeIconElement(typeKey, true, 'large'); 
+                    // Pass false for isFromResultListParam for icons in the selected display area
+                    const icon = createTypeIconElement(typeKey, true, 'large', false); 
                     selectedTypesContainer.appendChild(icon);
                 });
             } else {
@@ -522,11 +526,12 @@
             attackingMainTitle.appendChild(attackingTextSpan);
 
             if (selectedTypes.length > 0) {
-                const titleIcon1 = createTypeIconElement(selectedTypes[0], true, 'title'); // Make title icons clickable for removal
+                // Title icons are for display, not for re-selection based on result logic
+                const titleIcon1 = createTypeIconElement(selectedTypes[0], true, 'title', false); 
                 if (titleIcon1) attackingMainTitle.appendChild(titleIcon1);
             }
             if (selectedTypes.length > 1) {
-                const titleIcon2 = createTypeIconElement(selectedTypes[1], true, 'title'); // Make title icons clickable for removal
+                const titleIcon2 = createTypeIconElement(selectedTypes[1], true, 'title', false); 
                 if (titleIcon2) attackingMainTitle.appendChild(titleIcon2);
             }
 
@@ -534,17 +539,18 @@
 
             attackingType1Details.classList.remove('hidden');
             attackingType1Title.innerHTML = ''; 
-            const icon1Display = createTypeIconElement(currentType1, true, 'title'); // Make title icons clickable for removal
+             // Subsection title icons are for display, not for re-selection based on result logic
+            const icon1Display = createTypeIconElement(currentType1, true, 'title', false);
             if (icon1Display) attackingType1Title.appendChild(icon1Display);
             
             const attackerData1 = TYPE_CHART_DATA[currentType1];
             allTypeKeys.forEach(targetTypeKey => {
                 const multiplier = attackerData1.attacks[targetTypeKey] === undefined ? 1 : attackerData1.attacks[targetTypeKey];
                 if (Math.abs(multiplier - POGO_SUPER_EFFECTIVE) < epsilon) {
-                    const icon = createTypeIconElement(targetTypeKey, true, 'smallResult'); 
+                    const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', true); // isFromResultListParam = true
                     if (icon) superEffectiveAgainstType1Display.appendChild(icon);
                 } else if (Math.abs(multiplier - POGO_NOT_VERY_EFFECTIVE) < epsilon) {
-                    const icon = createTypeIconElement(targetTypeKey, true, 'smallResult'); 
+                    const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', true); // isFromResultListParam = true
                     if (icon) notVeryEffectiveAgainstType1Display.appendChild(icon);
                 }
             });
@@ -557,17 +563,17 @@
                 attackingType1Details.classList.remove('md:col-span-2'); 
 
                 attackingType2Title.innerHTML = ''; 
-                const icon2Display = createTypeIconElement(currentType2, true, 'title'); // Make title icons clickable for removal
+                const icon2Display = createTypeIconElement(currentType2, true, 'title', false); // isFromResultListParam = false
                 if (icon2Display) attackingType2Title.appendChild(icon2Display);
 
                 const attackerData2 = TYPE_CHART_DATA[currentType2];
                 allTypeKeys.forEach(targetTypeKey => {
                     const multiplier = attackerData2.attacks[targetTypeKey] === undefined ? 1 : attackerData2.attacks[targetTypeKey];
                     if (Math.abs(multiplier - POGO_SUPER_EFFECTIVE) < epsilon) {
-                        const icon = createTypeIconElement(targetTypeKey, true, 'smallResult'); 
+                        const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', true); // isFromResultListParam = true
                         if (icon) superEffectiveAgainstType2Display.appendChild(icon);
                     } else if (Math.abs(multiplier - POGO_NOT_VERY_EFFECTIVE) < epsilon) {
-                        const icon = createTypeIconElement(targetTypeKey, true, 'smallResult'); 
+                        const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', true); // isFromResultListParam = true
                         if (icon) notVeryEffectiveAgainstType2Display.appendChild(icon);
                     }
                 });
@@ -585,11 +591,11 @@
             defendingTextSpan.classList.add('title-text');
             defendingInfoTitle.appendChild(defendingTextSpan);
 
-            const defIcon1 = createTypeIconElement(currentType1, true, 'title'); // Make title icons clickable for removal
+            const defIcon1 = createTypeIconElement(currentType1, true, 'title', false); // isFromResultListParam = false
             if (defIcon1) defendingInfoTitle.appendChild(defIcon1);
             
             if (currentType2) { 
-                const defIcon2 = createTypeIconElement(currentType2, true, 'title'); // Make title icons clickable for removal
+                const defIcon2 = createTypeIconElement(currentType2, true, 'title', false); // isFromResultListParam = false
                 if (defIcon2) defendingInfoTitle.appendChild(defIcon2);
 
                 allTypeKeys.forEach(attackingTypeKey => {
@@ -598,7 +604,7 @@
                     let type2DefMultiplier = attackingTypeInfo.attacks[currentType2] === undefined ? 1 : attackingTypeInfo.attacks[currentType2];
                     let finalMultiplier = type1DefMultiplier * type2DefMultiplier;
                     
-                    const icon = createTypeIconElement(attackingTypeKey, true, 'smallResult');
+                    const icon = createTypeIconElement(attackingTypeKey, true, 'smallResult', true); // isFromResultListParam = true
                     if (!icon) return;
 
                     if (Math.abs(finalMultiplier - (POGO_SUPER_EFFECTIVE * POGO_SUPER_EFFECTIVE)) < epsilon) { 
@@ -618,7 +624,7 @@
                     const attackingTypeInfo = TYPE_CHART_DATA[attackingTypeKey];
                     const finalMultiplier = attackingTypeInfo.attacks[currentType1] === undefined ? 1 : attackingTypeInfo.attacks[currentType1];
                     
-                    const icon = createTypeIconElement(attackingTypeKey, true, 'smallResult');
+                    const icon = createTypeIconElement(attackingTypeKey, true, 'smallResult', true); // isFromResultListParam = true
                     if (!icon) return;
 
                     if (Math.abs(finalMultiplier - POGO_SUPER_EFFECTIVE) < epsilon) {
@@ -634,7 +640,8 @@
 
         function renderInitialTypes() {
             Object.keys(TYPE_CHART_DATA).forEach(typeKey => {
-                const icon = createTypeIconElement(typeKey, true, 'large'); 
+                // Initial list icons are not from a result list
+                const icon = createTypeIconElement(typeKey, true, 'large', false); 
                 if (icon) initialTypesDisplay.appendChild(icon);
             });
             selectedTypesContainer.innerHTML = '';
