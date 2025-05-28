@@ -48,7 +48,7 @@
             padding: 0.25rem;
             border-radius: 0.375rem;
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            min-width: 70px; /* 아이콘과 텍스트를 포함한 최소 너비 */
+            min-width: 70px;
         }
         .type-icon-container:hover, .type-icon-container:focus-within {
             transform: translateY(-2px);
@@ -65,36 +65,35 @@
             background-color: transparent;
         }
         .type-icon-text {
-            font-size: 0.75rem; /* 12px */
+            font-size: 0.75rem;
             font-weight: 500;
-            color: #4A5568; /* 기본 텍스트 색상 */
+            color: #4A5568;
             text-align: center;
-            line-height: 1; /* 텍스트 줄 간격 조절 */
+            line-height: 1;
         }
 
-        .type-icon-container.large .type-icon-img { /* 초기 목록, 선택된 타입용 */
+        .type-icon-container.large .type-icon-img {
             height: 32px; 
         }
         .type-icon-container.large .type-icon-text {
             font-size: 0.8rem;
         }
 
-        .type-icon-container.small .type-icon-img { /* 결과 목록용 */
+        .type-icon-container.small .type-icon-img {
             height: 24px;
         }
         .type-icon-container.small .type-icon-text {
             font-size: 0.7rem;
         }
         
-        .type-icon-container.title-icon .type-icon-img { /* 제목 옆 아이콘용 */
+        .type-icon-container.title-icon .type-icon-img {
              height: 24px;
-             margin-bottom: 0; /* 제목 옆 아이콘은 텍스트 없음 */
+             margin-bottom: 0;
              margin-right: 0.5em;
         }
         .type-icon-container.title-icon .type-icon-text {
-            display: none; /* 제목 옆 아이콘은 텍스트 숨김 */
+            display: none;
         }
-
 
         .info-section h4 {
             margin-top: 0.5rem;
@@ -106,7 +105,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.25rem;
-            align-items: flex-start; 
+            align-items: flex-start;
             min-height: 40px; 
         }
         #selected-types-display-container {
@@ -306,25 +305,25 @@
     </div>
 
     <script>
-        const TYPE_CHART_DATA = {
-            Normal:   { name: "Normal",   iconUrl: "https://i.namu.wiki/i/-vi5jEDBixhwQo6h9Swt5r2XP0bmWCB26GgmZd2b5iI23FyxQBxg9YOTAl_fXDTBXhV0HrL-gwcVB1MP7ziL2A.svg",   attacks: { Rock: 0.5, Steel: 0.5, Ghost: 0 } },
-            Fire:     { name: "Fire",     iconUrl: "https://i.namu.wiki/i/fOQ_qhLJ-68qFRGtkYhglbRBf84tHXxbG-LpfO3t65WKxr2BGm2eBYjbvSJXobTb4pSnz-2_Q6Nko-9GpDKZoQ.svg",     attacks: { Fire: 0.5, Water: 0.5, Grass: 2, Ice: 2, Bug: 2, Rock: 0.5, Dragon: 0.5, Steel: 2 } },
-            Water:    { name: "Water",    iconUrl: "https://i.namu.wiki/i/K8NeDvRx_obwnpNVhqQS9v_WmaBd5S9Em-wm4NQYDjTKR1sC8dAA2Nyk2ErOQHRl0igUoBgbtOPIkq_luePj9w.svg",    attacks: { Fire: 2, Water: 0.5, Grass: 0.5, Ground: 2, Rock: 2, Dragon: 0.5 } },
-            Grass:    { name: "Grass",    iconUrl: "https://i.namu.wiki/i/dzDHjOiSYwuX6hxhVssdYClhAatwBMklDbppFA95PujgvP3t7aJiCs0vwhPl7MdjkEX6byS9GFRpEp8dVqSJAA.svg",    attacks: { Fire: 0.5, Water: 2, Grass: 0.5, Poison: 0.5, Ground: 2, Flying: 0.5, Bug: 0.5, Rock: 2, Dragon: 0.5, Steel: 0.5 } },
-            Electric: { name: "Electric", iconUrl: "https://i.namu.wiki/i/IBVPL8cYW3W3Z7xnczkqeBfzV-OYI3PuFp84XNaGrVeMXmccj4pQxIuf5FaQsgVPZXklkz8fWcyXYX_GvtTQWLkPe3AWNrQfZf3L-ePfi1ciETn7H0ItG9-KFZ27o33b31b2cfXpjZuP-C5k_z9DNQ.svg", attacks: { Water: 2, Grass: 0.5, Electric: 0.5, Ground: 0, Flying: 2, Dragon: 0.5 } },
-            Ice:      { name: "Ice",      iconUrl: "https://i.namu.wiki/i/AM3ELQBcQKmQINJU-NoNmVetARA6sG0pSM7jj2TqI3BR05hmARXVxQhoymb5hnZ55__-QKfIBXapRl-eOfxPfw.svg",      attacks: { Fire: 0.5, Water: 0.5, Grass: 2, Ice: 0.5, Ground: 2, Flying: 2, Dragon: 2, Steel: 0.5 } },
-            Fighting: { name: "Fighting", iconUrl: "https://i.namu.wiki/i/abgLf1NCwWZVOnqUr07iMKMKATkRZUl7ebSOsV28WebfOD5nPDTGws1o8SZRjW312jLRN1HiKWv9Q-ow0jOSPg.svg", attacks: { Normal: 2, Ice: 2, Poison: 0.5, Flying: 0.5, Psychic: 0.5, Bug: 0.5, Rock: 2, Ghost: 0, Steel: 2, Fairy: 0.5 } },
-            Poison:   { name: "Poison",   iconUrl: "https://i.namu.wiki/i/AmfKaPNSzkq6V64gdlBW8NcRo91Kk5cf0y0ctM_uGqywsCqEfZAVyZE_CQSq57WKJ1MewIFJ7hf_Ue15sF-wOA.svg",   attacks: { Grass: 2, Poison: 0.5, Ground: 0.5, Rock: 0.5, Ghost: 0.5, Steel: 0, Fairy: 2 } },
-            Ground:   { name: "Ground",   iconUrl: "https://i.namu.wiki/i/u1XF1UfNXbfKMiL3wjYgcorBFy68OlZWp7sbQBZ4LjC4RiXlqf2OTI7i2za3E4mNzG4xmh9AV7iqA5KBjSblTg.svg",   attacks: { Fire: 2, Electric: 2, Grass: 0.5, Poison: 2, Flying: 0, Bug: 0.5, Rock: 2, Steel: 2 } },
-            Flying:   { name: "Flying",   iconUrl: "https://i.namu.wiki/i/6rxyvimbm-TqVs1UubOleFr5t4_Q__Wkk6N1vQhJji_xJ5rG4niY4bblWXwkCZhw547dU3wgHjtNGACkMBrpBg.svg",   attacks: { Grass: 2, Electric: 0.5, Fighting: 2, Bug: 2, Rock: 0.5, Steel: 0.5 } },
-            Psychic:  { name: "Psychic",  iconUrl: "https://i.namu.wiki/i/s3tvAExItuGtXZSJdY2o2UWqvtslXBfDaebJszU5-ILN8IBOBKbXk7S5wdnHhK9ICjcDbl8SUjz3HKe5rpnenw.svg",  attacks: { Fighting: 2, Poison: 2, Psychic: 0.5, Steel: 0.5, Dark: 0 } },
-            Bug:      { name: "Bug",      iconUrl: "https://i.namu.wiki/i/sbghhEmGIanCW3iLOmiul1zpr1N7f1uGHOCCCGwOpqT95rLeumqOjRaqqGQeGzCFN3QHhGZT0qkumtXdvzV5Dg.svg",      attacks: { Fire: 0.5, Grass: 2, Fighting: 0.5, Poison: 0.5, Flying: 0.5, Psychic: 2, Ghost: 0.5, Steel: 0.5, Fairy: 0.5, Dark: 2 } },
-            Rock:     { name: "Rock",     iconUrl: "https://i.namu.wiki/i/QtigHmT7iatMfJYcl5GkdzXOazARfMML_DNSV5-WfzpUQH-QDvm4m9BLzqQsem8j5v0Opq-ciieTXqqvp13pyA.svg",     attacks: { Fire: 2, Ice: 2, Fighting: 0.5, Ground: 0.5, Flying: 2, Bug: 2, Steel: 0.5 } },
-            Ghost:    { name: "Ghost",    iconUrl: "https://i.namu.wiki/i/drPffJNBD0tE9sTPBup0bCPP_BCr6JtyDZ_BpdITvOHIS_L1u1PGsJMB-wAjTmKH-qWgsoReCkDcYs4Lhhm8Lw.svg",    attacks: { Normal: 0, Psychic: 2, Ghost: 2, Dark: 0.5 } },
-            Dragon:   { name: "Dragon",   iconUrl: "https://i.namu.wiki/i/ayGkgPYPttlUkVXl_AvFqldFB9iNCqtjIaO2ZGs-fU2WzGjP5dcPIqALxYCKPpJxe5ZONGgiv7JYXpo0tvQKpQ.svg",   attacks: { Dragon: 2, Steel: 0.5, Fairy: 0 } },
-            Steel:    { name: "Steel",    iconUrl: "https://i.namu.wiki/i/wBEYIMt0V_-4zZJHh7w_MIUB1rrkXfDrjae7tyTGsntI3-Nu8XQxrOlsxmwE5jXnJWw6R7E7E8kCCNhV0IuPMw.svg",    attacks: { Fire: 0.5, Water: 0.5, Electric: 0.5, Ice: 2, Rock: 2, Steel: 0.5, Fairy: 2 } },
-            Dark:     { name: "Dark",     iconUrl: "https://i.namu.wiki/i/QWg0pcfJL3J5HtPYR4bdUygGtheL7vOZQn2l4U-GGklnE6-RCAqoq7t_e41t6ukaC0t3j_ARSeR0w8sLpXLdag.svg",     attacks: { Fighting: 0.5, Psychic: 2, Ghost: 2, Dark: 0.5, Fairy: 0.5 } },
-            Fairy:    { name: "Fairy",    iconUrl: "https://i.namu.wiki/i/CClTdI6o6Oz5ql_zR_5UbwDdzOehw-eQOSgn9hY6LYqwxhYJQde7yGeGnQqX76vMcxwelgCeYhD-00ZgdjEPpQ.svg",    attacks: { Fire: 0.5, Fighting: 2, Poison: 0.5, Dragon: 2, Steel: 0.5, Dark: 2 } }
+        const TYPE_CHART_DATA = { // Reverted to placeholder iconUrls for now
+            Normal:   { name: "Normal",   iconUrl: "https://placehold.co/70x25/A8A77A/FFFFFF?text=Normal&font=Inter",   attacks: { Rock: 0.5, Steel: 0.5, Ghost: 0 } },
+            Fire:     { name: "Fire",     iconUrl: "https://placehold.co/70x25/EE8130/FFFFFF?text=Fire&font=Inter",     attacks: { Fire: 0.5, Water: 0.5, Grass: 2, Ice: 2, Bug: 2, Rock: 0.5, Dragon: 0.5, Steel: 2 } },
+            Water:    { name: "Water",    iconUrl: "https://placehold.co/70x25/6390F0/FFFFFF?text=Water&font=Inter",    attacks: { Fire: 2, Water: 0.5, Grass: 0.5, Ground: 2, Rock: 2, Dragon: 0.5 } },
+            Grass:    { name: "Grass",    iconUrl: "https://placehold.co/70x25/7AC74C/FFFFFF?text=Grass&font=Inter",    attacks: { Fire: 0.5, Water: 2, Grass: 0.5, Poison: 0.5, Ground: 2, Flying: 0.5, Bug: 0.5, Rock: 2, Dragon: 0.5, Steel: 0.5 } },
+            Electric: { name: "Electric", iconUrl: "https://placehold.co/70x25/F7D02C/000000?text=Electric&font=Inter", attacks: { Water: 2, Grass: 0.5, Electric: 0.5, Ground: 0, Flying: 2, Dragon: 0.5 } },
+            Ice:      { name: "Ice",      iconUrl: "https://placehold.co/70x25/96D9D6/000000?text=Ice&font=Inter",      attacks: { Fire: 0.5, Water: 0.5, Grass: 2, Ice: 0.5, Ground: 2, Flying: 2, Dragon: 2, Steel: 0.5 } },
+            Fighting: { name: "Fighting", iconUrl: "https://placehold.co/70x25/C22E28/FFFFFF?text=Fighting&font=Inter", attacks: { Normal: 2, Ice: 2, Poison: 0.5, Flying: 0.5, Psychic: 0.5, Bug: 0.5, Rock: 2, Ghost: 0, Steel: 2, Fairy: 0.5 } },
+            Poison:   { name: "Poison",   iconUrl: "https://placehold.co/70x25/A33EA1/FFFFFF?text=Poison&font=Inter",   attacks: { Grass: 2, Poison: 0.5, Ground: 0.5, Rock: 0.5, Ghost: 0.5, Steel: 0, Fairy: 2 } },
+            Ground:   { name: "Ground",   iconUrl: "https://placehold.co/70x25/E2BF65/000000?text=Ground&font=Inter",   attacks: { Fire: 2, Electric: 2, Grass: 0.5, Poison: 2, Flying: 0, Bug: 0.5, Rock: 2, Steel: 2 } },
+            Flying:   { name: "Flying",   iconUrl: "https://placehold.co/70x25/A98FF3/FFFFFF?text=Flying&font=Inter",   attacks: { Grass: 2, Electric: 0.5, Fighting: 2, Bug: 2, Rock: 0.5, Steel: 0.5 } }, // Original color, placeholder
+            Psychic:  { name: "Psychic",  iconUrl: "https://placehold.co/70x25/F95587/FFFFFF?text=Psychic&font=Inter",  attacks: { Fighting: 2, Poison: 2, Psychic: 0.5, Steel: 0.5, Dark: 0 } },
+            Bug:      { name: "Bug",      iconUrl: "https://placehold.co/70x25/A6B91A/FFFFFF?text=Bug&font=Inter",      attacks: { Fire: 0.5, Grass: 2, Fighting: 0.5, Poison: 0.5, Flying: 0.5, Psychic: 2, Ghost: 0.5, Steel: 0.5, Fairy: 0.5, Dark: 2 } },
+            Rock:     { name: "Rock",     iconUrl: "https://placehold.co/70x25/B6A136/FFFFFF?text=Rock&font=Inter",     attacks: { Fire: 2, Ice: 2, Fighting: 0.5, Ground: 0.5, Flying: 2, Bug: 2, Steel: 0.5 } },
+            Ghost:    { name: "Ghost",    iconUrl: "https://placehold.co/70x25/735797/FFFFFF?text=Ghost&font=Inter",    attacks: { Normal: 0, Psychic: 2, Ghost: 2, Dark: 0.5 } },
+            Dragon:   { name: "Dragon",   iconUrl: "https://placehold.co/70x25/6F35FC/FFFFFF?text=Dragon&font=Inter",   attacks: { Dragon: 2, Steel: 0.5, Fairy: 0 } },
+            Steel:    { name: "Steel",    iconUrl: "https://placehold.co/70x25/B7B7CE/000000?text=Steel&font=Inter",    attacks: { Fire: 0.5, Water: 0.5, Electric: 0.5, Ice: 2, Rock: 2, Steel: 0.5, Fairy: 2 } },
+            Dark:     { name: "Dark",     iconUrl: "https://placehold.co/70x25/705746/FFFFFF?text=Dark&font=Inter",     attacks: { Fighting: 0.5, Psychic: 2, Ghost: 2, Dark: 0.5, Fairy: 0.5 } },
+            Fairy:    { name: "Fairy",    iconUrl: "https://placehold.co/70x25/D685AD/FFFFFF?text=Fairy&font=Inter",    attacks: { Fire: 0.5, Fighting: 2, Poison: 0.5, Dragon: 2, Steel: 0.5, Dark: 2 } }
         };
 
         const initialTypesDisplay = document.getElementById('initial-types-display');
@@ -382,10 +381,10 @@
             if (context === 'title') {
                 container.classList.add('title-icon'); 
                 placeholderSize = "24x24";
-            } else if (context === 'smallResult') { // Changed from 'small' to 'smallResult' for clarity
+            } else if (context === 'smallResult') { 
                 container.classList.add('small'); 
                 placeholderSize = "22x22";
-            } else { // 'default' for initial list and selected types
+            } else { 
                 container.classList.add('large'); 
             }
             
@@ -397,7 +396,6 @@
 
             container.appendChild(img);
 
-            // Always add text if not a title icon
             if (context !== 'title') { 
                 const textSpan = document.createElement('span');
                 textSpan.classList.add('type-icon-text');
