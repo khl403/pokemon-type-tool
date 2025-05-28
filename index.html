@@ -1,26 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-T4RRZDJW');</script>
-<!-- End Google Tag Manager -->
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RN6803EFGZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-RN6803EFGZ');
-</script>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T4RRZDJW');</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RN6803EFGZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RN6803EFGZ');
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-adsense-account" content="ca-pub-3182004757080506">
     <title>Pokémon Go Type Matchup Calculator</title>
+    <meta name="google-adsense-account" content="ca-pub-3182004757080506">
+    <meta name="description" content="An easy-to-use Pokémon Go type matchup calculator to find strengths, weaknesses, and resistances for your battles.">
+
     <meta property="og:title" content="Pokémon Go Type Matchup Calculator">
     <meta property="og:description" content="Calculate Pokémon type matchups for Pokémon Go. Find strengths, weaknesses, and resistances.">
     <meta property="og:image" content="https://raw.githubusercontent.com/khl403/pokemon-type-tool/main/images/thumbnail.png"> 
@@ -31,18 +30,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta name="twitter:title" content="Pokémon Go Type Matchup Calculator">
     <meta name="twitter:description" content="Calculate Pokémon type matchups for Pokémon Go. Find strengths, weaknesses, and resistances.">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/khl403/pokemon-type-tool/main/images/thumbnail.png"> 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3182004757080506"
-     crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-adsense-account" content="ca-pub-3182004757080506">
-    <link rel="icon" href="/favicon.png" type="image/png"> 
 
     <link rel="icon" href="/images/favicon.png" type="image/png"> 
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3182004757080506"
+     crossorigin="anonymous"></script>
 
-    <title>Pokémon Go Type Matchup Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <style>
         body {
             font-family: 'Inter', 'Noto Sans KR', sans-serif; 
@@ -57,16 +52,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .ad-banner-area {
             width: 100%;
             background-color: #e2e8f0; 
+            padding: 0.5rem 1rem; 
             text-align: center;
             font-size: 0.875rem; 
             color: #4a5568; 
             border-radius: 0.5rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            min-height: 50px; 
             overflow: hidden;
         }
         #ad-banner-top {
-            padding: 0.25rem 1rem; /* 상하 패딩 더 축소 */
-            min-height: 40px; /* 최소 높이 약간 축소 */
+            padding: 0.25rem 1rem; 
+            min-height: 40px; 
             margin-bottom: 1.5rem; 
         }
         #ad-banner-bottom {
@@ -116,21 +113,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             font-size: 0.8rem;
         }
 
-        .type-icon-container.small .type-icon-img {
+        .type-icon-container.small .type-icon-img { /* 결과 목록 아이콘 */
             height: 24px;
         }
         .type-icon-container.small .type-icon-text {
             font-size: 0.7rem;
         }
         
+        .type-icon-container.title-icon { /* 제목 옆 아이콘 컨테이너 */
+             flex-direction: row; /* 아이콘과 텍스트를 가로로 배열 (필요 시) */
+             min-width: auto;
+             padding: 0;
+             margin-right: 0.5em; /* 아이콘 간 간격 */
+        }
         .type-icon-container.title-icon .type-icon-img {
              height: 24px;
-             margin-bottom: 0;
-             margin-right: 0.5em;
+             margin-bottom: 0; 
+             margin-right: 0; /* 텍스트가 없으므로 오른쪽 마진 제거 */
         }
         .type-icon-container.title-icon .type-icon-text {
-            display: none;
+            /* 제목 아이콘 옆에는 텍스트를 표시하지 않거나, 필요시 별도 스타일링 */
+            display: none; 
         }
+
 
         .info-section h4 {
             margin-top: 0.5rem;
@@ -142,7 +147,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             display: flex;
             flex-wrap: wrap;
             gap: 0.25rem;
-            align-items: flex-start;
+            align-items: flex-start; 
             min-height: 40px; 
         }
         #selected-types-display-container {
@@ -234,10 +239,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </style>
 </head>
 <body class="p-4 md:p-8">
-      <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T4RRZDJW"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T4RRZDJW"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="container mx-auto max-w-4xl">
         <div id="ad-banner-top" class="ad-banner-area">
             <ins class="adsbygoogle"
@@ -442,12 +445,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             container.appendChild(img);
 
+            // For 'title' context, we don't add the text span below the image
             if (context !== 'title') { 
                 const textSpan = document.createElement('span');
                 textSpan.classList.add('type-icon-text');
                 textSpan.textContent = typeInfo.name;
                 container.appendChild(textSpan);
             }
+
 
             if (isInteractiveOnClick) { 
                 container.addEventListener('click', () => handleTypeClick(typeKey));
@@ -483,6 +488,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             if (selectedTypes.length > 0) {
                 selectedTypesContainer.classList.add('has-types'); 
                 selectedTypes.forEach(typeKey => {
+                    // Pass 'large' context for selected types display
                     const icon = createTypeIconElement(typeKey, true, 'large'); 
                     selectedTypesContainer.appendChild(icon);
                 });
@@ -516,11 +522,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             attackingMainTitle.appendChild(attackingTextSpan);
 
             if (selectedTypes.length > 0) {
-                const titleIcon1 = createTypeIconElement(selectedTypes[0], false, 'title');
+                const titleIcon1 = createTypeIconElement(selectedTypes[0], true, 'title'); // Make title icons clickable for removal
                 if (titleIcon1) attackingMainTitle.appendChild(titleIcon1);
             }
             if (selectedTypes.length > 1) {
-                const titleIcon2 = createTypeIconElement(selectedTypes[1], false, 'title');
+                const titleIcon2 = createTypeIconElement(selectedTypes[1], true, 'title'); // Make title icons clickable for removal
                 if (titleIcon2) attackingMainTitle.appendChild(titleIcon2);
             }
 
@@ -528,7 +534,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
             attackingType1Details.classList.remove('hidden');
             attackingType1Title.innerHTML = ''; 
-            const icon1Display = createTypeIconElement(currentType1, false, 'title'); 
+            const icon1Display = createTypeIconElement(currentType1, true, 'title'); // Make title icons clickable for removal
             if (icon1Display) attackingType1Title.appendChild(icon1Display);
             
             const attackerData1 = TYPE_CHART_DATA[currentType1];
@@ -551,7 +557,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 attackingType1Details.classList.remove('md:col-span-2'); 
 
                 attackingType2Title.innerHTML = ''; 
-                const icon2Display = createTypeIconElement(currentType2, false, 'title'); 
+                const icon2Display = createTypeIconElement(currentType2, true, 'title'); // Make title icons clickable for removal
                 if (icon2Display) attackingType2Title.appendChild(icon2Display);
 
                 const attackerData2 = TYPE_CHART_DATA[currentType2];
@@ -579,11 +585,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             defendingTextSpan.classList.add('title-text');
             defendingInfoTitle.appendChild(defendingTextSpan);
 
-            const defIcon1 = createTypeIconElement(currentType1, false, 'title');
+            const defIcon1 = createTypeIconElement(currentType1, true, 'title'); // Make title icons clickable for removal
             if (defIcon1) defendingInfoTitle.appendChild(defIcon1);
             
             if (currentType2) { 
-                const defIcon2 = createTypeIconElement(currentType2, false, 'title');
+                const defIcon2 = createTypeIconElement(currentType2, true, 'title'); // Make title icons clickable for removal
                 if (defIcon2) defendingInfoTitle.appendChild(defIcon2);
 
                 allTypeKeys.forEach(attackingTypeKey => {
