@@ -22,13 +22,14 @@
         .ad-banner-area {
             width: 100%;
             background-color: #e2e8f0; 
-            padding: 1rem;
+            padding: 0.5rem 1rem; 
             text-align: center;
             font-size: 0.875rem; 
             color: #4a5568; 
             border-radius: 0.5rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             min-height: 50px; 
+            overflow: hidden;
         }
         #ad-banner-top {
             margin-bottom: 1.5rem; 
@@ -38,40 +39,62 @@
             margin-bottom: 1rem; 
         }
         
-        /* Type Icon Image Styles */
-        .type-icon-img {
+        .type-icon-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 0.375rem;
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            vertical-align: middle;
-            border-radius: 4px; /* Optional: if images have sharp corners */
+            min-width: 70px; /* 아이콘과 텍스트를 포함한 최소 너비 */
         }
-        .type-icon-img:hover, .type-icon-img:focus {
+        .type-icon-container:hover, .type-icon-container:focus-within {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
             outline: 2px solid #3b82f6; 
             outline-offset: 2px;
         }
-        .type-icon-img.dragging {
-            opacity: 0.5;
-            transform: scale(0.9) !important; 
-            box-shadow: none !important;
-        }
-        .large-icon-img { /* For initial list and selected display */
-            height: 28px; /* Adjust as needed for your assets */
-            width: auto;  /* Maintain aspect ratio */
-            margin: 2px; /* Add a little space if icons are tightly packed */
-        }
-        .small-icon-img { /* For result lists and subsection titles */
-            height: 22px;
+
+        .type-icon-img {
+            height: 28px;
             width: auto;
-            margin-right: 0.5em; 
+            margin-bottom: 0.25rem;
+            object-fit: contain;
+            background-color: transparent;
         }
-        .title-icon-img { /* For icons next to main category titles */
-            height: 24px; 
-            width: auto;
-            margin-right: 0.8em; 
-            display: inline-block; 
+        .type-icon-text {
+            font-size: 0.75rem; /* 12px */
+            font-weight: 500;
+            color: #4A5568; /* 기본 텍스트 색상 */
+            text-align: center;
+            line-height: 1; /* 텍스트 줄 간격 조절 */
         }
+
+        .type-icon-container.large .type-icon-img { /* 초기 목록, 선택된 타입용 */
+            height: 32px; 
+        }
+        .type-icon-container.large .type-icon-text {
+            font-size: 0.8rem;
+        }
+
+        .type-icon-container.small .type-icon-img { /* 결과 목록용 */
+            height: 24px;
+        }
+        .type-icon-container.small .type-icon-text {
+            font-size: 0.7rem;
+        }
+        
+        .type-icon-container.title-icon .type-icon-img { /* 제목 옆 아이콘용 */
+             height: 24px;
+             margin-bottom: 0; /* 제목 옆 아이콘은 텍스트 없음 */
+             margin-right: 0.5em;
+        }
+        .type-icon-container.title-icon .type-icon-text {
+            display: none; /* 제목 옆 아이콘은 텍스트 숨김 */
+        }
+
 
         .info-section h4 {
             margin-top: 0.5rem;
@@ -82,15 +105,13 @@
         .type-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            align-items: center; /* Align items vertically */
+            gap: 0.25rem;
+            align-items: flex-start; 
             min-height: 40px; 
         }
         #selected-types-display-container {
-            padding: 0.75rem 1.5rem;
+            padding: 0.75rem;
             border-radius: 0.5rem;
-            font-size: 1.25rem; 
-            font-weight: 700;
             text-align: center;
             margin-bottom: 1rem; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -99,17 +120,10 @@
             justify-content: center;
             gap: 0.5rem; 
             min-height: 76px; 
-            border: 2px dashed #cbd5e1; 
+            border: 2px solid #e5e7eb; 
             background-color: #f8fafc; 
         }
-        #selected-types-display-container.has-types { 
-            background-color: #f8fafc; /* Keep a light background or make transparent */
-            border-color: #cbd5e1; /* Or transparent if you prefer */
-        }
-        #selected-types-display-container.drag-over {
-            border-color: #60a5fa !important; 
-            background-color: #eff6ff !important; 
-        }
+        
         .selected-type-placeholder-content { 
             display: flex;
             flex-direction: column;
@@ -119,11 +133,8 @@
             font-size: 0.9rem;
             font-weight: normal;
         }
-        .selected-type-placeholder-content svg {
-            width: 28px; 
-            height: 28px;
-            margin-bottom: 0.25rem;
-            stroke-width: 1.5;
+        .selected-type-placeholder-content svg { 
+            display: none; 
         }
         .multiplier {
             padding: 0.2em 0.5em;
@@ -190,28 +201,26 @@
 <body class="p-4 md:p-8">
     <div class="container mx-auto max-w-4xl">
         <div id="ad-banner-top" class="ad-banner-area">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3182004757080506"
-     crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-3182004757080506"
-     data-ad-slot="3672303036"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-3182004757080506"
+                 data-ad-slot="3672303036"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </div>
 
         <header class="text-center mb-8">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Pokémon Dual-Type Matchup Calculator</h1>
             <p class="text-gray-600 mt-2">
-                Click an icon from the type list below or drag it to the selection area above to assign types.
+                Click an icon from the type list below to assign types to the selection area above.
             </p>
         </header>
 
         <div id="types-container-wrapper" class="initial-types-container">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4 text-center">All Types (Click or Drag)</h2>
+            <h2 class="text-xl font-semibold text-gray-700 mb-4 text-center">All Types (Click to Select)</h2>
             <div id="initial-types-display" class="type-list justify-center">
                 </div>
         </div>
@@ -284,40 +293,38 @@
             </div>
         </div>
          <div id="ad-banner-bottom" class="ad-banner-area">
-             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3182004757080506"
-     crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-3182004757080506"
-     data-ad-slot="1046139690"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+             <ins class="adsbygoogle"
+                  style="display:block"
+                  data-ad-client="ca-pub-3182004757080506"
+                  data-ad-slot="1046139690"
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"></ins>
+             <script>
+                  (adsbygoogle = window.adsbygoogle || []).push({});
+             </script>
         </div>
     </div>
 
     <script>
         const TYPE_CHART_DATA = {
-            Normal:   { name: "Normal",   color: "#A8A77A", iconUrl: "https://placehold.co/70x25/A8A77A/FFFFFF?text=Normal&font=Inter",   attacks: { Rock: 0.5, Steel: 0.5, Ghost: 0 } },
-            Fire:     { name: "Fire",     color: "#EE8130", iconUrl: "https://placehold.co/70x25/EE8130/FFFFFF?text=Fire&font=Inter",     attacks: { Fire: 0.5, Water: 0.5, Grass: 2, Ice: 2, Bug: 2, Rock: 0.5, Dragon: 0.5, Steel: 2 } },
-            Water:    { name: "Water",    color: "#6390F0", iconUrl: "https://placehold.co/70x25/6390F0/FFFFFF?text=Water&font=Inter",    attacks: { Fire: 2, Water: 0.5, Grass: 0.5, Ground: 2, Rock: 2, Dragon: 0.5 } },
-            Grass:    { name: "Grass",    color: "#7AC74C", iconUrl: "https://placehold.co/70x25/7AC74C/FFFFFF?text=Grass&font=Inter",    attacks: { Fire: 0.5, Water: 2, Grass: 0.5, Poison: 0.5, Ground: 2, Flying: 0.5, Bug: 0.5, Rock: 2, Dragon: 0.5, Steel: 0.5 } },
-            Electric: { name: "Electric", color: "#F7D02C", iconUrl: "https://placehold.co/70x25/F7D02C/000000?text=Electric&font=Inter", attacks: { Water: 2, Grass: 0.5, Electric: 0.5, Ground: 0, Flying: 2, Dragon: 0.5 } },
-            Ice:      { name: "Ice",      color: "#96D9D6", iconUrl: "https://placehold.co/70x25/96D9D6/000000?text=Ice&font=Inter",      attacks: { Fire: 0.5, Water: 0.5, Grass: 2, Ice: 0.5, Ground: 2, Flying: 2, Dragon: 2, Steel: 0.5 } },
-            Fighting: { name: "Fighting", color: "#C22E28", iconUrl: "https://placehold.co/70x25/C22E28/FFFFFF?text=Fighting&font=Inter", attacks: { Normal: 2, Ice: 2, Poison: 0.5, Flying: 0.5, Psychic: 0.5, Bug: 0.5, Rock: 2, Ghost: 0, Steel: 2, Fairy: 0.5 } },
-            Poison:   { name: "Poison",   color: "#A33EA1", iconUrl: "https://placehold.co/70x25/A33EA1/FFFFFF?text=Poison&font=Inter",   attacks: { Grass: 2, Poison: 0.5, Ground: 0.5, Rock: 0.5, Ghost: 0.5, Steel: 0, Fairy: 2 } },
-            Ground:   { name: "Ground",   color: "#E2BF65", iconUrl: "https://placehold.co/70x25/E2BF65/000000?text=Ground&font=Inter",   attacks: { Fire: 2, Electric: 2, Grass: 0.5, Poison: 2, Flying: 0, Bug: 0.5, Rock: 2, Steel: 2 } },
-            Flying:   { name: "Flying",   color: "#A98FF3", iconUrl: "https://placehold.co/70x25/A98FF3/FFFFFF?text=Flying&font=Inter",   attacks: { Grass: 2, Electric: 0.5, Fighting: 2, Bug: 2, Rock: 0.5, Steel: 0.5 } },
-            Psychic:  { name: "Psychic",  color: "#F95587", iconUrl: "https://placehold.co/70x25/F95587/FFFFFF?text=Psychic&font=Inter",  attacks: { Fighting: 2, Poison: 2, Psychic: 0.5, Steel: 0.5, Dark: 0 } },
-            Bug:      { name: "Bug",      color: "#A6B91A", iconUrl: "https://placehold.co/70x25/A6B91A/FFFFFF?text=Bug&font=Inter",      attacks: { Fire: 0.5, Grass: 2, Fighting: 0.5, Poison: 0.5, Flying: 0.5, Psychic: 2, Ghost: 0.5, Steel: 0.5, Fairy: 0.5, Dark: 2 } },
-            Rock:     { name: "Rock",     color: "#B6A136", iconUrl: "https://placehold.co/70x25/B6A136/FFFFFF?text=Rock&font=Inter",     attacks: { Fire: 2, Ice: 2, Fighting: 0.5, Ground: 0.5, Flying: 2, Bug: 2, Steel: 0.5 } },
-            Ghost:    { name: "Ghost",    color: "#735797", iconUrl: "https://placehold.co/70x25/735797/FFFFFF?text=Ghost&font=Inter",    attacks: { Normal: 0, Psychic: 2, Ghost: 2, Dark: 0.5 } },
-            Dragon:   { name: "Dragon",   color: "#6F35FC", iconUrl: "https://placehold.co/70x25/6F35FC/FFFFFF?text=Dragon&font=Inter",   attacks: { Dragon: 2, Steel: 0.5, Fairy: 0 } },
-            Steel:    { name: "Steel",    color: "#B7B7CE", iconUrl: "https://placehold.co/70x25/B7B7CE/000000?text=Steel&font=Inter",    attacks: { Fire: 0.5, Water: 0.5, Electric: 0.5, Ice: 2, Rock: 2, Steel: 0.5, Fairy: 2 } },
-            Dark:     { name: "Dark",     color: "#705746", iconUrl: "https://placehold.co/70x25/705746/FFFFFF?text=Dark&font=Inter",     attacks: { Fighting: 0.5, Psychic: 2, Ghost: 2, Dark: 0.5, Fairy: 0.5 } },
-            Fairy:    { name: "Fairy",    color: "#D685AD", iconUrl: "https://placehold.co/70x25/D685AD/FFFFFF?text=Fairy&font=Inter",    attacks: { Fire: 0.5, Fighting: 2, Poison: 0.5, Dragon: 2, Steel: 0.5, Dark: 2 } }
+            Normal:   { name: "Normal",   iconUrl: "https://i.namu.wiki/i/-vi5jEDBixhwQo6h9Swt5r2XP0bmWCB26GgmZd2b5iI23FyxQBxg9YOTAl_fXDTBXhV0HrL-gwcVB1MP7ziL2A.svg",   attacks: { Rock: 0.5, Steel: 0.5, Ghost: 0 } },
+            Fire:     { name: "Fire",     iconUrl: "https://i.namu.wiki/i/fOQ_qhLJ-68qFRGtkYhglbRBf84tHXxbG-LpfO3t65WKxr2BGm2eBYjbvSJXobTb4pSnz-2_Q6Nko-9GpDKZoQ.svg",     attacks: { Fire: 0.5, Water: 0.5, Grass: 2, Ice: 2, Bug: 2, Rock: 0.5, Dragon: 0.5, Steel: 2 } },
+            Water:    { name: "Water",    iconUrl: "https://i.namu.wiki/i/K8NeDvRx_obwnpNVhqQS9v_WmaBd5S9Em-wm4NQYDjTKR1sC8dAA2Nyk2ErOQHRl0igUoBgbtOPIkq_luePj9w.svg",    attacks: { Fire: 2, Water: 0.5, Grass: 0.5, Ground: 2, Rock: 2, Dragon: 0.5 } },
+            Grass:    { name: "Grass",    iconUrl: "https://i.namu.wiki/i/dzDHjOiSYwuX6hxhVssdYClhAatwBMklDbppFA95PujgvP3t7aJiCs0vwhPl7MdjkEX6byS9GFRpEp8dVqSJAA.svg",    attacks: { Fire: 0.5, Water: 2, Grass: 0.5, Poison: 0.5, Ground: 2, Flying: 0.5, Bug: 0.5, Rock: 2, Dragon: 0.5, Steel: 0.5 } },
+            Electric: { name: "Electric", iconUrl: "https://i.namu.wiki/i/IBVPL8cYW3W3Z7xnczkqeBfzV-OYI3PuFp84XNaGrVeMXmccj4pQxIuf5FaQsgVPZXklkz8fWcyXYX_GvtTQWLkPe3AWNrQfZf3L-ePfi1ciETn7H0ItG9-KFZ27o33b31b2cfXpjZuP-C5k_z9DNQ.svg", attacks: { Water: 2, Grass: 0.5, Electric: 0.5, Ground: 0, Flying: 2, Dragon: 0.5 } },
+            Ice:      { name: "Ice",      iconUrl: "https://i.namu.wiki/i/AM3ELQBcQKmQINJU-NoNmVetARA6sG0pSM7jj2TqI3BR05hmARXVxQhoymb5hnZ55__-QKfIBXapRl-eOfxPfw.svg",      attacks: { Fire: 0.5, Water: 0.5, Grass: 2, Ice: 0.5, Ground: 2, Flying: 2, Dragon: 2, Steel: 0.5 } },
+            Fighting: { name: "Fighting", iconUrl: "https://i.namu.wiki/i/abgLf1NCwWZVOnqUr07iMKMKATkRZUl7ebSOsV28WebfOD5nPDTGws1o8SZRjW312jLRN1HiKWv9Q-ow0jOSPg.svg", attacks: { Normal: 2, Ice: 2, Poison: 0.5, Flying: 0.5, Psychic: 0.5, Bug: 0.5, Rock: 2, Ghost: 0, Steel: 2, Fairy: 0.5 } },
+            Poison:   { name: "Poison",   iconUrl: "https://i.namu.wiki/i/AmfKaPNSzkq6V64gdlBW8NcRo91Kk5cf0y0ctM_uGqywsCqEfZAVyZE_CQSq57WKJ1MewIFJ7hf_Ue15sF-wOA.svg",   attacks: { Grass: 2, Poison: 0.5, Ground: 0.5, Rock: 0.5, Ghost: 0.5, Steel: 0, Fairy: 2 } },
+            Ground:   { name: "Ground",   iconUrl: "https://i.namu.wiki/i/u1XF1UfNXbfKMiL3wjYgcorBFy68OlZWp7sbQBZ4LjC4RiXlqf2OTI7i2za3E4mNzG4xmh9AV7iqA5KBjSblTg.svg",   attacks: { Fire: 2, Electric: 2, Grass: 0.5, Poison: 2, Flying: 0, Bug: 0.5, Rock: 2, Steel: 2 } },
+            Flying:   { name: "Flying",   iconUrl: "https://i.namu.wiki/i/6rxyvimbm-TqVs1UubOleFr5t4_Q__Wkk6N1vQhJji_xJ5rG4niY4bblWXwkCZhw547dU3wgHjtNGACkMBrpBg.svg",   attacks: { Grass: 2, Electric: 0.5, Fighting: 2, Bug: 2, Rock: 0.5, Steel: 0.5 } },
+            Psychic:  { name: "Psychic",  iconUrl: "https://i.namu.wiki/i/s3tvAExItuGtXZSJdY2o2UWqvtslXBfDaebJszU5-ILN8IBOBKbXk7S5wdnHhK9ICjcDbl8SUjz3HKe5rpnenw.svg",  attacks: { Fighting: 2, Poison: 2, Psychic: 0.5, Steel: 0.5, Dark: 0 } },
+            Bug:      { name: "Bug",      iconUrl: "https://i.namu.wiki/i/sbghhEmGIanCW3iLOmiul1zpr1N7f1uGHOCCCGwOpqT95rLeumqOjRaqqGQeGzCFN3QHhGZT0qkumtXdvzV5Dg.svg",      attacks: { Fire: 0.5, Grass: 2, Fighting: 0.5, Poison: 0.5, Flying: 0.5, Psychic: 2, Ghost: 0.5, Steel: 0.5, Fairy: 0.5, Dark: 2 } },
+            Rock:     { name: "Rock",     iconUrl: "https://i.namu.wiki/i/QtigHmT7iatMfJYcl5GkdzXOazARfMML_DNSV5-WfzpUQH-QDvm4m9BLzqQsem8j5v0Opq-ciieTXqqvp13pyA.svg",     attacks: { Fire: 2, Ice: 2, Fighting: 0.5, Ground: 0.5, Flying: 2, Bug: 2, Steel: 0.5 } },
+            Ghost:    { name: "Ghost",    iconUrl: "https://i.namu.wiki/i/drPffJNBD0tE9sTPBup0bCPP_BCr6JtyDZ_BpdITvOHIS_L1u1PGsJMB-wAjTmKH-qWgsoReCkDcYs4Lhhm8Lw.svg",    attacks: { Normal: 0, Psychic: 2, Ghost: 2, Dark: 0.5 } },
+            Dragon:   { name: "Dragon",   iconUrl: "https://i.namu.wiki/i/ayGkgPYPttlUkVXl_AvFqldFB9iNCqtjIaO2ZGs-fU2WzGjP5dcPIqALxYCKPpJxe5ZONGgiv7JYXpo0tvQKpQ.svg",   attacks: { Dragon: 2, Steel: 0.5, Fairy: 0 } },
+            Steel:    { name: "Steel",    iconUrl: "https://i.namu.wiki/i/wBEYIMt0V_-4zZJHh7w_MIUB1rrkXfDrjae7tyTGsntI3-Nu8XQxrOlsxmwE5jXnJWw6R7E7E8kCCNhV0IuPMw.svg",    attacks: { Fire: 0.5, Water: 0.5, Electric: 0.5, Ice: 2, Rock: 2, Steel: 0.5, Fairy: 2 } },
+            Dark:     { name: "Dark",     iconUrl: "https://i.namu.wiki/i/QWg0pcfJL3J5HtPYR4bdUygGtheL7vOZQn2l4U-GGklnE6-RCAqoq7t_e41t6ukaC0t3j_ARSeR0w8sLpXLdag.svg",     attacks: { Fighting: 0.5, Psychic: 2, Ghost: 2, Dark: 0.5, Fairy: 0.5 } },
+            Fairy:    { name: "Fairy",    iconUrl: "https://i.namu.wiki/i/CClTdI6o6Oz5ql_zR_5UbwDdzOehw-eQOSgn9hY6LYqwxhYJQde7yGeGnQqX76vMcxwelgCeYhD-00ZgdjEPpQ.svg",    attacks: { Fire: 0.5, Fighting: 2, Poison: 0.5, Dragon: 2, Steel: 0.5, Dark: 2 } }
         };
 
         const initialTypesDisplay = document.getElementById('initial-types-display');
@@ -345,124 +352,83 @@
         function createPlaceholderElement() {
             const placeholderDiv = document.createElement('div');
             placeholderDiv.classList.add('selected-type-placeholder-content');
-            
-            const svgIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            svgIcon.setAttribute('fill', 'none');
-            svgIcon.setAttribute('viewBox', '0 0 24 24');
-            svgIcon.setAttribute('stroke', 'currentColor');
-            svgIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.338-2.32 5.75 5.75 0 011.046 11.098A1.5 1.5 0 0018 19.5H6.75z" />';
-
             const textSpan = document.createElement('span');
-            textSpan.textContent = 'Drag type icons here or click to select.'; 
+            textSpan.textContent = 'Click types below to select'; 
             
-            placeholderDiv.appendChild(svgIcon);
             placeholderDiv.appendChild(textSpan);
             return placeholderDiv;
         }
         const selectedTypesPlaceholderOriginal = createPlaceholderElement();
 
         let selectedTypes = []; 
-        let dropOccurredOnValidTarget = false; 
-        window.isCurrentlyDraggingSelectedIcon = false; 
-        let currentlyDraggedKeyFromSelected = null; 
 
-        // Removed getTextColorForBackground as images now carry color/text
-
-        function createTypeIconElement(typeKey, isInteractiveOnClick = true, context = 'default', isDraggableForSelectedArea = false) {
-            // context can be 'default', 'smallResult', 'title'
+        function createTypeIconElement(typeKey, isInteractiveOnClick = true, context = 'default') {
             const typeInfo = TYPE_CHART_DATA[typeKey];
             if (!typeInfo) return null;
 
-            const img = document.createElement('img');
-            img.src = typeInfo.iconUrl; // Use the iconUrl
-            img.alt = `${typeInfo.name} type`;
-            img.classList.add('type-icon-img'); 
-            img.dataset.typeKey = typeKey; 
+            const container = document.createElement('div');
+            container.classList.add('type-icon-container');
+            container.dataset.typeKey = typeKey;
+            container.setAttribute('role', 'button'); 
+            container.setAttribute('tabindex', '0');  
+            container.setAttribute('aria-label', `${typeInfo.name} type`);
 
+            const img = document.createElement('img');
+            img.src = typeInfo.iconUrl; 
+            img.alt = ""; 
+            img.classList.add('type-icon-img'); 
+            
+            let placeholderSize = "70x25"; 
             if (context === 'title') {
-                img.classList.add('title-icon-img');
-            } else if (context === 'smallResult') {
-                img.classList.add('small-icon-img');
+                container.classList.add('title-icon'); 
+                placeholderSize = "24x24";
+            } else if (context === 'smallResult') { // Changed from 'small' to 'smallResult' for clarity
+                container.classList.add('small'); 
+                placeholderSize = "22x22";
             } else { // 'default' for initial list and selected types
-                img.classList.add('large-icon-img');
+                container.classList.add('large'); 
             }
             
-            img.setAttribute('role', 'button'); 
-            img.setAttribute('tabindex', '0');  
-            img.setAttribute('aria-label', `${typeInfo.name} type`); 
+            img.onerror = function() {
+                this.onerror=null; 
+                this.src = `https://placehold.co/${placeholderSize.split('x')[0]}x${placeholderSize.split('x')[1]}/CCCCCC/FFFFFF?text=?&font=Inter`;
+                this.alt = `${typeInfo.name} type (image error)`;
+            };
+
+            container.appendChild(img);
+
+            // Always add text if not a title icon
+            if (context !== 'title') { 
+                const textSpan = document.createElement('span');
+                textSpan.classList.add('type-icon-text');
+                textSpan.textContent = typeInfo.name;
+                container.appendChild(textSpan);
+            }
 
             if (isInteractiveOnClick) { 
-                img.addEventListener('click', () => handleTypeClick(typeKey));
-                img.addEventListener('keydown', (event) => { 
+                container.addEventListener('click', () => handleTypeClick(typeKey));
+                container.addEventListener('keydown', (event) => { 
                     if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault();
                         handleTypeClick(typeKey);
                     }
                 });
             }
-            
-            // Draggable logic for initial list icons
-            if (!isDraggableForSelectedArea && isInteractiveOnClick && context === 'default') { 
-                img.setAttribute('draggable', 'true');
-                img.addEventListener('dragstart', (event) => {
-                    event.dataTransfer.setData('text/plain', typeKey); 
-                    event.dataTransfer.effectAllowed = 'move';
-                    event.target.classList.add('dragging');
-                    window.isCurrentlyDraggingSelectedIcon = false; 
-                });
-                img.addEventListener('dragend', (event) => {
-                    event.target.classList.remove('dragging');
-                });
-            }
-
-            // Draggable logic for icons in the selected area
-            if (isDraggableForSelectedArea && context === 'default') {
-                img.setAttribute('draggable', 'true');
-                img.addEventListener('dragstart', (event) => {
-                    currentlyDraggedKeyFromSelected = typeKey; 
-                    event.dataTransfer.setData('draggedTypeKeyFromSelected', typeKey); 
-                    event.dataTransfer.effectAllowed = 'move';
-                    event.target.classList.add('dragging');
-                    window.isCurrentlyDraggingSelectedIcon = true; 
-                });
-                 img.addEventListener('dragend', (event) => {
-                    event.target.classList.remove('dragging');
-                    
-                    if (window.isCurrentlyDraggingSelectedIcon && !dropOccurredOnValidTarget) { 
-                        const draggedKey = currentlyDraggedKeyFromSelected; 
-                        if (draggedKey) { 
-                            const indexToRemove = selectedTypes.indexOf(draggedKey);
-
-                            if (indexToRemove === 0) { 
-                                selectedTypes.shift(); 
-                            } else if (indexToRemove === 1) { 
-                                selectedTypes.pop(); 
-                            }
-                            updateSelectedTypesDisplay();
-                            displayTypeEffectiveness(); 
-                        }
-                    }
-                    window.isCurrentlyDraggingSelectedIcon = false; 
-                    dropOccurredOnValidTarget = false; 
-                    currentlyDraggedKeyFromSelected = null; 
-                });
-            }
-            return img;
+            return container;
         }
         
         function handleTypeClick(typeKey) { 
-            const [currentType1, currentType2] = selectedTypes;
+            const typeIndex = selectedTypes.indexOf(typeKey);
 
-            if (currentType1 === typeKey) { 
-                selectedTypes.shift(); 
-            } else if (currentType2 === typeKey) { 
-                selectedTypes.pop(); 
-            } else if (selectedTypes.length === 0) { 
-                selectedTypes.push(typeKey);
-            } else if (selectedTypes.length === 1) { 
-                selectedTypes.push(typeKey);
+            if (typeIndex > -1) { 
+                selectedTypes.splice(typeIndex, 1);
             } else { 
-                selectedTypes = [typeKey]; 
+                if (selectedTypes.length < 2) { 
+                    selectedTypes.push(typeKey);
+                } else { 
+                    selectedTypes.shift();
+                    selectedTypes.push(typeKey);
+                }
             }
             updateSelectedTypesDisplay();
             displayTypeEffectiveness();
@@ -472,68 +438,16 @@
             selectedTypesContainer.innerHTML = ''; 
             if (selectedTypes.length > 0) {
                 selectedTypesContainer.classList.add('has-types'); 
-                const icon1 = createTypeIconElement(selectedTypes[0], true, 'default', true); 
-                selectedTypesContainer.appendChild(icon1);
+                selectedTypes.forEach(typeKey => {
+                    const icon = createTypeIconElement(typeKey, true, 'large'); 
+                    selectedTypesContainer.appendChild(icon);
+                });
             } else {
                 selectedTypesContainer.classList.remove('has-types'); 
-            }
-
-            if (selectedTypes.length > 1) {
-                const icon2 = createTypeIconElement(selectedTypes[1], true, 'default', true);
-                selectedTypesContainer.appendChild(icon2);
-            }
-
-            if (selectedTypes.length === 0) {
                 selectedTypesContainer.appendChild(selectedTypesPlaceholderOriginal.cloneNode(true));
             }
         }
         
-        document.documentElement.addEventListener('dragover', (event) => {
-            if (window.isCurrentlyDraggingSelectedIcon) { 
-                 event.preventDefault(); 
-            }
-        });
-        
-        selectedTypesContainer.addEventListener('dragover', (event) => {
-            event.preventDefault(); 
-            selectedTypesContainer.classList.add('drag-over');
-            event.dataTransfer.dropEffect = 'move';
-        });
-
-        selectedTypesContainer.addEventListener('dragleave', () => {
-            selectedTypesContainer.classList.remove('drag-over');
-        });
-
-        selectedTypesContainer.addEventListener('drop', (event) => { 
-            event.preventDefault();
-            selectedTypesContainer.classList.remove('drag-over');
-            
-            const droppedKeyFromInitialList = event.dataTransfer.getData('text/plain');
-            const draggedKeyFromSelected = currentlyDraggedKeyFromSelected; 
-
-            if (window.isCurrentlyDraggingSelectedIcon && draggedKeyFromSelected) { 
-                dropOccurredOnValidTarget = true; 
-                return; 
-            }
-
-            if (droppedKeyFromInitialList) { 
-                dropOccurredOnValidTarget = true; 
-                if (selectedTypes.length === 0) {
-                    selectedTypes.push(droppedKeyFromInitialList);
-                } else if (selectedTypes.length === 1) {
-                    if (selectedTypes[0] !== droppedKeyFromInitialList) { 
-                        selectedTypes.push(droppedKeyFromInitialList);
-                    }
-                } else { 
-                    if (selectedTypes[0] !== droppedKeyFromInitialList && selectedTypes[1] !== droppedKeyFromInitialList) {
-                         selectedTypes = [droppedKeyFromInitialList]; 
-                    }
-                }
-                updateSelectedTypesDisplay();
-                displayTypeEffectiveness();
-            }
-        });
-
         function displayTypeEffectiveness() {
             if (selectedTypes.length === 0) { 
                 infoContainerWrapper.classList.add('hidden');
@@ -570,7 +484,7 @@
 
             attackingType1Details.classList.remove('hidden');
             attackingType1Title.innerHTML = ''; 
-            const icon1Display = createTypeIconElement(currentType1, false, 'smallResult'); 
+            const icon1Display = createTypeIconElement(currentType1, false, 'title'); 
             if (icon1Display) attackingType1Title.appendChild(icon1Display);
             
             const attackerData1 = TYPE_CHART_DATA[currentType1];
@@ -593,7 +507,7 @@
                 attackingType1Details.classList.remove('md:col-span-2'); 
 
                 attackingType2Title.innerHTML = ''; 
-                const icon2Display = createTypeIconElement(currentType2, false, 'smallResult'); 
+                const icon2Display = createTypeIconElement(currentType2, false, 'title'); 
                 if (icon2Display) attackingType2Title.appendChild(icon2Display);
 
                 const attackerData2 = TYPE_CHART_DATA[currentType2];
@@ -662,7 +576,7 @@
 
         function renderInitialTypes() {
             Object.keys(TYPE_CHART_DATA).forEach(typeKey => {
-                const icon = createTypeIconElement(typeKey, true, 'default', false); 
+                const icon = createTypeIconElement(typeKey, true, 'large'); 
                 if (icon) initialTypesDisplay.appendChild(icon);
             });
             selectedTypesContainer.innerHTML = '';
