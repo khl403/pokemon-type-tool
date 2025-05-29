@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"> <head>
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -31,7 +30,7 @@
     <meta name="twitter:description" content="Calculate Pokémon type matchups for Pokémon Go. Find strengths, weaknesses, and resistances.">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/khl403/pokemon-type-tool/main/images/thumbnail.png"> 
 
-    <link rel="icon" href="https://raw.githubusercontent.com/khl403/pokemon-type-tool/main/images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="https://raw.githubusercontent.com/khl403/pokemon-type-tool/main/images/types/favicon.png" type="image/png">
     
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3182004757080506"
      crossorigin="anonymous"></script>
@@ -61,7 +60,6 @@
             overflow: hidden;
         }
         #ad-banner-top {
-            /* padding and min-height are less relevant when display: none */
             margin-bottom: 1.5rem; 
         }
         #ad-banner-bottom {
@@ -227,6 +225,31 @@
         .hidden {
             display: none !important;
         }
+        #language-switcher {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+            gap: 0.5rem; 
+        }
+        .lang-switch-button {
+            padding: 0.375rem 0.75rem; 
+            border: 1px solid transparent;
+            border-radius: 0.375rem; 
+            font-size: 0.875rem; 
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+            background-color: #e2e8f0; 
+            color: #4a5568; 
+        }
+        .lang-switch-button.active {
+            background-color: #3b82f6; 
+            color: white;
+            border-color: #3b82f6;
+        }
+        .lang-switch-button:hover:not(.active) {
+            background-color: #cbd5e1; 
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -245,15 +268,24 @@
             </script>
         </div>
 
+        <div id="language-switcher">
+            <button class="lang-switch-button" data-lang="en">ENG</button>
+            <button class="lang-switch-button" data-lang="kor">KOR</button>
+            <button class="lang-switch-button" data-lang="ms">MAS</button> 
+            <button class="lang-switch-button" data-lang="de">DEU</button> 
+            <button class="lang-switch-button" data-lang="es">ESP</button> 
+            <button class="lang-switch-button" data-lang="nl">NLD</button> 
+        </div>
+
         <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Pokémon GO Dual-Type Matchup Calculator</h1>
-            <p class="text-gray-600 mt-2">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800" data-translate-key="mainTitle">Pokémon Dual-Type Matchup Calculator</h1>
+            <p class="text-gray-600 mt-2" data-translate-key="headerSubtitle">
                 Click an icon from the type list below to assign types to the selection area above.
             </p>
         </header>
 
         <div id="types-container-wrapper" class="initial-types-container">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4 text-center">All Types (Click to Select)</h2>
+            <h2 class="text-xl font-semibold text-gray-700 mb-4 text-center" data-translate-key="allTypesTitle">All Types (Click to Select)</h2>
             <div id="initial-types-display" class="type-list justify-center">
                 </div>
         </div>
@@ -266,17 +298,19 @@
         <div id="info-container-wrapper" class="info-container-wrapper hidden">
             <div class="grid grid-cols-1 gap-0"> 
                 <div id="attacking-info-main" class="info-category"> 
-                    <h3 id="attacking-main-title" class="text-xl font-semibold mb-3 main-category-title"></h3>
+                    <h3 id="attacking-main-title" class="text-xl font-semibold mb-3 main-category-title">
+                        <span class="title-text" data-translate-key="attackingWithTitle">Attacking with</span>
+                        </h3>
                     
                     <div id="attacking-subsections-container" class="grid md:grid-cols-2 gap-4">
                         <div id="attacking-type1-details" class="attacking-subsection hidden"> 
                             <h3 id="attacking-type1-title"></h3> 
                             <div class="info-section mb-4">
-                                <h4><span class="multiplier pogo-1_6x">1.6x</span> Super effective!</h4>
+                                <h4><span class="multiplier pogo-1_6x">1.6x</span> <span data-translate-key="superEffective">Super effective!</span></h4>
                                 <div id="super-effective-against-type1" class="type-list"></div>
                             </div>
                             <div class="info-section mb-4">
-                                <h4><span class="multiplier pogo-0_625x">0.625x</span> Not very effective...</h4>
+                                <h4><span class="multiplier pogo-0_625x">0.625x</span> <span data-translate-key="notVeryEffective">Not very effective...</span></h4>
                                 <div id="not-very-effective-against-type1" class="type-list"></div>
                             </div>
                         </div>
@@ -284,11 +318,11 @@
                         <div id="attacking-type2-details" class="attacking-subsection hidden"> 
                             <h3 id="attacking-type2-title"></h3> 
                             <div class="info-section mb-4">
-                                <h4><span class="multiplier pogo-1_6x">1.6x</span> Super effective!</h4>
+                                <h4><span class="multiplier pogo-1_6x">1.6x</span> <span data-translate-key="superEffective">Super effective!</span></h4>
                                 <div id="super-effective-against-type2" class="type-list"></div>
                             </div>
                             <div class="info-section mb-4">
-                                <h4><span class="multiplier pogo-0_625x">0.625x</span> Not very effective...</h4>
+                                <h4><span class="multiplier pogo-0_625x">0.625x</span> <span data-translate-key="notVeryEffective">Not very effective...</span></h4>
                                 <div id="not-very-effective-against-type2" class="type-list"></div>
                             </div>
                         </div>
@@ -296,24 +330,26 @@
                 </div>
 
                 <div id="defending-info" class="info-category"> 
-                    <h3 id="defending-info-title" class="text-xl font-semibold mb-3 main-category-title"></h3>
+                    <h3 id="defending-info-title" class="text-xl font-semibold mb-3 main-category-title">
+                         <span class="title-text" data-translate-key="defendingAsTitle">Defending as</span>
+                         </h3>
                     <div class="info-section mb-4">
-                        <h4><span class="multiplier pogo-2_56x">2.56x</span> Critical weakness!</h4>
+                        <h4><span class="multiplier pogo-2_56x">2.56x</span> <span data-translate-key="criticalWeakness">Critical weakness!</span></h4>
                         <div id="ultra-weak-to" class="type-list"></div>
                     </div>
                     <div class="info-section mb-4">
-                        <h4><span class="multiplier pogo-1_6x">1.6x</span> Weakness</h4>
+                        <h4><span class="multiplier pogo-1_6x">1.6x</span> <span data-translate-key="weakness">Weakness</span></h4>
                         <div id="weak-to" class="type-list"></div>
                     </div>
                     <div class="info-section mb-4">
-                        <h4><span class="multiplier pogo-0_625x">0.625x</span> Resistance</h4>
+                        <h4><span class="multiplier pogo-0_625x">0.625x</span> <span data-translate-key="resistance">Resistance</span></h4>
                         <div id="resistant-to" class="type-list"></div>
                     </div>
                     <div class="info-section mb-4">
-                        <h4><span class="multiplier pogo-0_391x">0.391x</span> Strong Resistance!</h4>
+                        <h4><span class="multiplier pogo-0_391x">0.391x</span> <span data-translate-key="strongResistance">Strong Resistance!</span></h4>
                         <div id="ultra-resistant-to" class="type-list"></div>
                     </div>
-                    <div class="info-section"> <h4><span class="multiplier pogo-0_39x">0.39x</span> Immunity</h4>
+                    <div class="info-section"> <h4><span class="multiplier pogo-0_39x">0.39x</span> <span data-translate-key="immunity">Immunity</span></h4>
                         <div id="immune-to" class="type-list"></div>
                     </div>
                 </div>
@@ -342,31 +378,35 @@
         const POGO_NOT_VERY_EFFECTIVE = 0.625;
         const POGO_IMMUNITY = 0.39; 
 
-        const TYPE_CHART_DATA = {
-            Normal:   { name: "Normal",   iconUrl: `${GITHUB_IMAGE_PATH}normal.svg`,   attacks: { Rock: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Ghost: POGO_IMMUNITY } },
-            Fire:     { name: "Fire",     iconUrl: `${GITHUB_IMAGE_PATH}fire.svg`,     attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Bug: POGO_SUPER_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_SUPER_EFFECTIVE } },
-            Water:    { name: "Water",    iconUrl: `${GITHUB_IMAGE_PATH}water.svg`,    attacks: { Fire: POGO_SUPER_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_SUPER_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE } },
-            Grass:    { name: "Grass",    iconUrl: `${GITHUB_IMAGE_PATH}grass.svg`,    attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Water: POGO_SUPER_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_SUPER_EFFECTIVE, Flying: POGO_NOT_VERY_EFFECTIVE, Bug: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
-            Electric: { name: "Electric", iconUrl: `${GITHUB_IMAGE_PATH}electric.svg`, attacks: { Water: POGO_SUPER_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Electric: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_IMMUNITY, Flying: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE } },
-            Ice:      { name: "Ice",      iconUrl: `${GITHUB_IMAGE_PATH}ice.svg`,      attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Ice: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_SUPER_EFFECTIVE, Flying: POGO_SUPER_EFFECTIVE, Dragon: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
-            Fighting: { name: "Fighting", iconUrl: `${GITHUB_IMAGE_PATH}fighting.svg`, attacks: { Normal: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_NOT_VERY_EFFECTIVE, Psychic: POGO_NOT_VERY_EFFECTIVE, Bug: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Ghost: POGO_IMMUNITY, Steel: POGO_SUPER_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE } },
-            Poison:   { name: "Poison",   iconUrl: `${GITHUB_IMAGE_PATH}poison.svg`,   attacks: { Grass: POGO_SUPER_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Ghost: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_IMMUNITY, Fairy: POGO_SUPER_EFFECTIVE } }, 
-            Ground:   { name: "Ground",   iconUrl: `${GITHUB_IMAGE_PATH}ground.svg`,   attacks: { Fire: POGO_SUPER_EFFECTIVE, Electric: POGO_SUPER_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_SUPER_EFFECTIVE, Flying: POGO_IMMUNITY, Bug: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Steel: POGO_SUPER_EFFECTIVE } },
-            Flying:   { name: "Flying",   iconUrl: `${GITHUB_IMAGE_PATH}flying.svg`,   attacks: { Grass: POGO_SUPER_EFFECTIVE, Electric: POGO_NOT_VERY_EFFECTIVE, Fighting: POGO_SUPER_EFFECTIVE, Bug: POGO_SUPER_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
-            Psychic:  { name: "Psychic",  iconUrl: `${GITHUB_IMAGE_PATH}psychic.svg`,  attacks: { Fighting: POGO_SUPER_EFFECTIVE, Poison: POGO_SUPER_EFFECTIVE, Psychic: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Dark: POGO_IMMUNITY } },
-            Bug:      { name: "Bug",      iconUrl: `${GITHUB_IMAGE_PATH}bug.svg`,      attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Fighting: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_NOT_VERY_EFFECTIVE, Psychic: POGO_SUPER_EFFECTIVE, Ghost: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE, Dark: POGO_SUPER_EFFECTIVE } },
-            Rock:     { name: "Rock",     iconUrl: `${GITHUB_IMAGE_PATH}rock.svg`,     attacks: { Fire: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Fighting: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_SUPER_EFFECTIVE, Bug: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
-            Ghost:    { name: "Ghost",    iconUrl: `${GITHUB_IMAGE_PATH}ghost.svg`,    attacks: { Normal: POGO_IMMUNITY, Psychic: POGO_SUPER_EFFECTIVE, Ghost: POGO_SUPER_EFFECTIVE, Dark: POGO_NOT_VERY_EFFECTIVE } },
+        const BASE_TYPE_DATA = {
+            Normal:   { iconUrl: `${GITHUB_IMAGE_PATH}normal.svg`,   attacks: { Rock: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Ghost: POGO_IMMUNITY } },
+            Fire:     { iconUrl: `${GITHUB_IMAGE_PATH}fire.svg`,     attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Bug: POGO_SUPER_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_SUPER_EFFECTIVE } },
+            Water:    { iconUrl: `${GITHUB_IMAGE_PATH}water.svg`,    attacks: { Fire: POGO_SUPER_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_SUPER_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE } },
+            Grass:    { iconUrl: `${GITHUB_IMAGE_PATH}grass.svg`,    attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Water: POGO_SUPER_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_SUPER_EFFECTIVE, Flying: POGO_NOT_VERY_EFFECTIVE, Bug: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
+            Electric: { iconUrl: `${GITHUB_IMAGE_PATH}electric.svg`, attacks: { Water: POGO_SUPER_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Electric: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_IMMUNITY, Flying: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE } },
+            Ice:      { iconUrl: `${GITHUB_IMAGE_PATH}ice.svg`,      attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Ice: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_SUPER_EFFECTIVE, Flying: POGO_SUPER_EFFECTIVE, Dragon: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
+            Fighting: { iconUrl: `${GITHUB_IMAGE_PATH}fighting.svg`, attacks: { Normal: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_NOT_VERY_EFFECTIVE, Psychic: POGO_NOT_VERY_EFFECTIVE, Bug: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Ghost: POGO_IMMUNITY, Steel: POGO_SUPER_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE } },
+            Poison:   { iconUrl: `${GITHUB_IMAGE_PATH}poison.svg`,   attacks: { Grass: POGO_SUPER_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Ghost: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_IMMUNITY, Fairy: POGO_SUPER_EFFECTIVE } }, 
+            Ground:   { iconUrl: `${GITHUB_IMAGE_PATH}ground.svg`,   attacks: { Fire: POGO_SUPER_EFFECTIVE, Electric: POGO_SUPER_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_SUPER_EFFECTIVE, Flying: POGO_IMMUNITY, Bug: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Steel: POGO_SUPER_EFFECTIVE } },
+            Flying:   { iconUrl: `${GITHUB_IMAGE_PATH}flying.svg`,   attacks: { Grass: POGO_SUPER_EFFECTIVE, Electric: POGO_NOT_VERY_EFFECTIVE, Fighting: POGO_SUPER_EFFECTIVE, Bug: POGO_SUPER_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
+            Psychic:  { iconUrl: `${GITHUB_IMAGE_PATH}psychic.svg`,  attacks: { Fighting: POGO_SUPER_EFFECTIVE, Poison: POGO_SUPER_EFFECTIVE, Psychic: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Dark: POGO_IMMUNITY } },
+            Bug:      { iconUrl: `${GITHUB_IMAGE_PATH}bug.svg`,      attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Fighting: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_NOT_VERY_EFFECTIVE, Psychic: POGO_SUPER_EFFECTIVE, Ghost: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE, Dark: POGO_SUPER_EFFECTIVE } },
+            Rock:     { iconUrl: `${GITHUB_IMAGE_PATH}rock.svg`,     attacks: { Fire: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Fighting: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_SUPER_EFFECTIVE, Bug: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
+            Ghost:    { iconUrl: `${GITHUB_IMAGE_PATH}ghost.svg`,    attacks: { Normal: POGO_IMMUNITY, Psychic: POGO_SUPER_EFFECTIVE, Ghost: POGO_SUPER_EFFECTIVE, Dark: POGO_NOT_VERY_EFFECTIVE } },
             Dragon:   { name: "Dragon",   iconUrl: `${GITHUB_IMAGE_PATH}dragon.svg`,   attacks: { Dragon: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_IMMUNITY } },
             Steel:    { name: "Steel",    iconUrl: `${GITHUB_IMAGE_PATH}steel.svg`,    attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE, Electric: POGO_NOT_VERY_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_SUPER_EFFECTIVE } },
             Dark:     { name: "Dark",     iconUrl: `${GITHUB_IMAGE_PATH}dark.svg`,     attacks: { Fighting: POGO_NOT_VERY_EFFECTIVE, Psychic: POGO_SUPER_EFFECTIVE, Ghost: POGO_SUPER_EFFECTIVE, Dark: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE } },
             Fairy:    { name: "Fairy",    iconUrl: `${GITHUB_IMAGE_PATH}fairy.svg`,    attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Fighting: POGO_SUPER_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Dragon: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Dark: POGO_SUPER_EFFECTIVE } }
         };
 
+        let currentLanguage = 'en'; 
+        let translations = {}; 
+        let TYPE_CHART_DATA = {}; 
+
         const initialTypesDisplay = document.getElementById('initial-types-display');
         const selectedTypesContainer = document.getElementById('selected-types-display-container');
         
-        const attackingMainTitle = document.getElementById('attacking-main-title');
+        const attackingMainTitleEl = document.getElementById('attacking-main-title'); 
         const attackingType1Details = document.getElementById('attacking-type1-details');
         const attackingType1Title = document.getElementById('attacking-type1-title');
         const superEffectiveAgainstType1Display = document.getElementById('super-effective-against-type1');
@@ -377,33 +417,153 @@
         const superEffectiveAgainstType2Display = document.getElementById('super-effective-against-type2');
         const notVeryEffectiveAgainstType2Display = document.getElementById('not-very-effective-against-type2');
         
-        const defendingInfoTitle = document.getElementById('defending-info-title');
+        const defendingInfoTitleEl = document.getElementById('defending-info-title'); 
         const ultraWeakToDisplay = document.getElementById('ultra-weak-to');
         const weakToDisplay = document.getElementById('weak-to');
         const resistantToDisplay = document.getElementById('resistant-to');
         const ultraResistantToDisplay = document.getElementById('ultra-resistant-to');
         const immuneToDisplay = document.getElementById('immune-to');
 
-
         const infoContainerWrapper = document.getElementById('info-container-wrapper');
+        const languageSwitcher = document.getElementById('language-switcher');
         
-        function createPlaceholderElement() {
+        function createPlaceholderElement(lang = 'en') {
             const placeholderDiv = document.createElement('div');
             placeholderDiv.classList.add('selected-type-placeholder-content');
             const textSpan = document.createElement('span');
-            textSpan.textContent = 'Click types below to select'; 
-            
+            textSpan.setAttribute('data-translate-key', 'placeholderText');
+            textSpan.textContent = translations[lang] && translations[lang].placeholderText ? translations[lang].placeholderText : 'Click types below to select'; 
             placeholderDiv.appendChild(textSpan);
             return placeholderDiv;
         }
-        const selectedTypesPlaceholderOriginal = createPlaceholderElement();
+        let selectedTypesPlaceholderOriginal = createPlaceholderElement(); 
 
         let selectedTypes = []; 
         const epsilon = 0.00001; 
+        const supportedLanguages = ['en', 'kor', 'ms', 'de', 'es', 'nl'];
 
-        function createTypeIconElement(typeKey, isInteractiveOnClick = true, context = 'default', isFromResultListParam = false) {
-            const typeInfo = TYPE_CHART_DATA[typeKey];
-            if (!typeInfo) return null;
+
+        async function fetchTranslations(lang) {
+            const filename = `${lang}.json`;
+            try {
+                const response = await fetch(`/locales/${filename}`); 
+                if (!response.ok) {
+                    console.error(`HTTP error! status: ${response.status} for /locales/${filename}`);
+                    return null;
+                }
+                return await response.json();
+            } catch (error) {
+                console.error(`Could not load or parse /locales/${filename}:`, error);
+                return null; 
+            }
+        }
+
+        function applyTranslations(lang) {
+            const langData = translations[lang];
+
+            if (!langData) {
+                console.warn(`Translations for ${lang} not available or failed to load. Using English as fallback or base keys.`);
+                // Fallback to English if current language failed and English is loaded
+                if (lang !== 'en' && translations['en']) {
+                    applyTranslations('en'); // Recursive call with English
+                    return;
+                }
+                // If English also failed or wasn't loaded, use base keys for names
+                TYPE_CHART_DATA = {};
+                Object.keys(BASE_TYPE_DATA).forEach(typeKey => {
+                    TYPE_CHART_DATA[typeKey] = {
+                        ...BASE_TYPE_DATA[typeKey],
+                        name: typeKey // Use the English key as the name
+                    };
+                });
+            } else {
+                 document.querySelectorAll('[data-translate-key]').forEach(element => {
+                    const key = element.getAttribute('data-translate-key');
+                    if (langData[key]) {
+                        element.textContent = langData[key];
+                    } else if (translations['en'] && translations['en'][key]) { // Fallback to English for specific missing keys
+                        element.textContent = translations['en'][key];
+                    }
+                });
+                
+                TYPE_CHART_DATA = {}; 
+                Object.keys(BASE_TYPE_DATA).forEach(typeKey => {
+                    TYPE_CHART_DATA[typeKey] = {
+                        ...BASE_TYPE_DATA[typeKey],
+                        name: (langData.types && langData.types[typeKey]) ? langData.types[typeKey] : typeKey 
+                    };
+                });
+            }
+
+            selectedTypesPlaceholderOriginal = createPlaceholderElement(lang); 
+            renderInitialTypes(); 
+            updateSelectedTypesDisplay(); 
+            if (selectedTypes.length > 0) {
+                displayTypeEffectiveness(); 
+            }
+        }
+
+        async function setLanguage(lang) {
+            let langToLoad = lang;
+            if (!supportedLanguages.includes(langToLoad)) {
+                langToLoad = 'en'; // Default to English if lang is not supported
+            }
+
+            if (!translations[langToLoad]) {
+                const loadedTranslations = await fetchTranslations(langToLoad);
+                if (loadedTranslations) {
+                    translations[langToLoad] = loadedTranslations;
+                } else { 
+                    console.warn(`Failed to load ${langToLoad}.json. Attempting fallback to English.`);
+                    if (langToLoad !== 'en') { 
+                        langToLoad = 'en';
+                        if (!translations[langToLoad]) { 
+                           translations[langToLoad] = await fetchTranslations(langToLoad);
+                        }
+                    }
+                    if (!translations[langToLoad]) { 
+                        console.error("Fatal: Could not load any language files. Displaying with default keys.");
+                        // Minimal fallback: use keys as names from BASE_TYPE_DATA
+                        TYPE_CHART_DATA = {};
+                        Object.keys(BASE_TYPE_DATA).forEach(typeKey => {
+                           TYPE_CHART_DATA[typeKey] = { ...BASE_TYPE_DATA[typeKey], name: typeKey };
+                        });
+                        currentLanguage = 'en'; 
+                        document.documentElement.lang = 'en';
+                        localStorage.setItem('pokemonGoTypeLang', 'en');
+                        applyTranslations('en'); // Try to apply UI text with English keys
+                        return;
+                    }
+                }
+            }
+            currentLanguage = langToLoad;
+            document.documentElement.lang = currentLanguage;
+            localStorage.setItem('pokemonGoTypeLang', currentLanguage);
+            // Update active state for buttons
+            document.querySelectorAll('.lang-switch-button').forEach(button => {
+                button.classList.toggle('active', button.dataset.lang === currentLanguage);
+            });
+            applyTranslations(currentLanguage);
+        }
+
+        languageSwitcher.addEventListener('click', (event) => {
+            const button = event.target.closest('.lang-switch-button');
+            if (button && button.dataset.lang) {
+                 setLanguage(button.dataset.lang);
+            }
+        });
+
+        function createTypeIconElement(typeKey, isInteractiveOnClick = true, context = 'default', clickOriginContext = 'unknown') {
+            const typeInfo = TYPE_CHART_DATA[typeKey]; 
+            if (!typeInfo || typeof typeInfo.name === 'undefined' || typeof typeInfo.iconUrl === 'undefined') { 
+                 console.error("Type info, name, or iconUrl not found for key:", typeKey, "in lang:", currentLanguage, typeInfo);
+                 const errorContainer = document.createElement('div');
+                 errorContainer.textContent = `Err:${typeKey}`; // Short error
+                 errorContainer.style.color = 'red';
+                 errorContainer.style.padding = '0.1rem';
+                 errorContainer.style.fontSize = '0.7rem';
+                 return errorContainer;
+            }
 
             const container = document.createElement('div');
             container.classList.add('type-icon-container');
@@ -445,42 +605,43 @@
 
             if (isInteractiveOnClick) { 
                 container.addEventListener('click', () => {
-                    handleTypeClick(typeKey, isFromResultListParam);
+                    handleTypeClick(typeKey, clickOriginContext);
                 });
                 container.addEventListener('keydown', (event) => { 
                     if (event.key === 'Enter' || event.key === ' ') {
                         event.preventDefault();
-                        handleTypeClick(typeKey, isFromResultListParam);
+                        handleTypeClick(typeKey, clickOriginContext);
                     }
                 });
             }
             return container;
         }
         
-        function handleTypeClick(typeKey, isFromResultList = false) { 
-            if (isFromResultList) {
-                if (selectedTypes.length === 1) {
-                    if (selectedTypes[0] !== typeKey) { 
-                        selectedTypes.push(typeKey);
-                    }
-                } else if (selectedTypes.length === 2) {
-                    selectedTypes = [typeKey]; 
-                } else { 
-                     selectedTypes = [typeKey];
-                }
-            } else { 
-                const typeIndex = selectedTypes.indexOf(typeKey);
-                if (typeIndex > -1) { 
+        function handleTypeClick(typeKey, clickOrigin = 'initialList') {
+            const typeIndex = selectedTypes.indexOf(typeKey);
+
+            if (clickOrigin === 'initialList') {
+                if (typeIndex > -1) {
                     selectedTypes.splice(typeIndex, 1);
-                } else { 
+                } else {
                     if (selectedTypes.length < 2) {
                         selectedTypes.push(typeKey);
                     } else { 
-                        selectedTypes.shift();
-                        selectedTypes.push(typeKey);
+                        selectedTypes = [typeKey];
                     }
                 }
+            } else if (clickOrigin === 'selectedDisplay' || clickOrigin === 'titleIcon') {
+                if (typeIndex > -1) {
+                    selectedTypes.splice(typeIndex, 1);
+                }
+            } else if (clickOrigin === 'resultList') {
+                if (selectedTypes.length === 1 && selectedTypes[0] !== typeKey) {
+                    selectedTypes.push(typeKey);
+                } else { 
+                    selectedTypes = [typeKey];
+                }
             }
+            
             updateSelectedTypesDisplay();
             displayTypeEffectiveness();
         }
@@ -490,12 +651,12 @@
             if (selectedTypes.length > 0) {
                 selectedTypesContainer.classList.add('has-types'); 
                 selectedTypes.forEach(typeKey => {
-                    const icon = createTypeIconElement(typeKey, true, 'large', false); 
-                    selectedTypesContainer.appendChild(icon);
+                    const icon = createTypeIconElement(typeKey, true, 'large', 'selectedDisplay'); 
+                    if(icon) selectedTypesContainer.appendChild(icon);
                 });
             } else {
                 selectedTypesContainer.classList.remove('has-types'); 
-                selectedTypesContainer.appendChild(selectedTypesPlaceholderOriginal.cloneNode(true));
+                selectedTypesContainer.appendChild(createPlaceholderElement(currentLanguage)); 
             }
         }
         
@@ -516,59 +677,65 @@
              ultraWeakToDisplay, weakToDisplay, resistantToDisplay, ultraResistantToDisplay, immuneToDisplay 
             ].forEach(display => display.innerHTML = '');
             
-            attackingMainTitle.innerHTML = ''; 
+            attackingMainTitleEl.innerHTML = ''; 
             const attackingTextSpan = document.createElement('span');
-            attackingTextSpan.textContent = 'Attacking with';
+            attackingTextSpan.setAttribute('data-translate-key', 'attackingWithTitle');
+            attackingTextSpan.textContent = translations[currentLanguage] && translations[currentLanguage].attackingWithTitle ? translations[currentLanguage].attackingWithTitle : 'Attacking with';
             attackingTextSpan.classList.add('title-text'); 
-            attackingMainTitle.appendChild(attackingTextSpan);
+            attackingMainTitleEl.appendChild(attackingTextSpan);
 
-            if (selectedTypes.length > 0) {
-                const titleIcon1 = createTypeIconElement(selectedTypes[0], true, 'title', true); 
-                if (titleIcon1) attackingMainTitle.appendChild(titleIcon1);
+            if (selectedTypes.length > 0 && TYPE_CHART_DATA[selectedTypes[0]]) { // Check if type data exists
+                const titleIcon1 = createTypeIconElement(selectedTypes[0], true, 'title', 'titleIcon'); 
+                if (titleIcon1) attackingMainTitleEl.appendChild(titleIcon1);
             }
-            if (selectedTypes.length > 1) {
-                const titleIcon2 = createTypeIconElement(selectedTypes[1], true, 'title', true); 
-                if (titleIcon2) attackingMainTitle.appendChild(titleIcon2);
+            if (selectedTypes.length > 1 && TYPE_CHART_DATA[selectedTypes[1]]) { // Check if type data exists
+                const titleIcon2 = createTypeIconElement(selectedTypes[1], true, 'title', 'titleIcon'); 
+                if (titleIcon2) attackingMainTitleEl.appendChild(titleIcon2);
             }
 
-            const allTypeKeys = Object.keys(TYPE_CHART_DATA);
+            const allTypeKeys = Object.keys(BASE_TYPE_DATA); 
 
-            attackingType1Details.classList.remove('hidden');
-            attackingType1Title.innerHTML = ''; 
-            const icon1Display = createTypeIconElement(currentType1, true, 'title', true);
-            if (icon1Display) attackingType1Title.appendChild(icon1Display);
-            
-            const attackerData1 = TYPE_CHART_DATA[currentType1];
-            allTypeKeys.forEach(targetTypeKey => {
-                const multiplier = attackerData1.attacks[targetTypeKey] === undefined ? 1 : attackerData1.attacks[targetTypeKey];
-                if (Math.abs(multiplier - POGO_SUPER_EFFECTIVE) < epsilon) {
-                    const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', true); 
-                    if (icon) superEffectiveAgainstType1Display.appendChild(icon);
-                } else if (Math.abs(multiplier - POGO_NOT_VERY_EFFECTIVE) < epsilon) {
-                    const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', true); 
-                    if (icon) notVeryEffectiveAgainstType1Display.appendChild(icon);
-                }
-            });
+            if(TYPE_CHART_DATA[currentType1] && TYPE_CHART_DATA[currentType1].attacks){
+                attackingType1Details.classList.remove('hidden');
+                attackingType1Title.innerHTML = ''; 
+                const icon1Display = createTypeIconElement(currentType1, true, 'title', 'titleIcon');
+                if (icon1Display) attackingType1Title.appendChild(icon1Display);
+                
+                const attackerData1 = TYPE_CHART_DATA[currentType1].attacks; 
+                allTypeKeys.forEach(targetTypeKey => {
+                    const multiplier = attackerData1[targetTypeKey] === undefined ? 1 : attackerData1[targetTypeKey];
+                    if (Math.abs(multiplier - POGO_SUPER_EFFECTIVE) < epsilon) {
+                        const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', 'resultList'); 
+                        if (icon) superEffectiveAgainstType1Display.appendChild(icon);
+                    } else if (Math.abs(multiplier - POGO_NOT_VERY_EFFECTIVE) < epsilon) {
+                        const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', 'resultList'); 
+                        if (icon) notVeryEffectiveAgainstType1Display.appendChild(icon);
+                    }
+                });
+            } else {
+                attackingType1Details.classList.add('hidden');
+            }
+
 
             const attackingSubsectionsContainer = document.getElementById('attacking-subsections-container');
-            if (currentType2) {
+            if (currentType2 && TYPE_CHART_DATA[currentType2] && TYPE_CHART_DATA[currentType2].attacks) {
                 attackingSubsectionsContainer.classList.remove('md:grid-cols-1');
                 attackingSubsectionsContainer.classList.add('md:grid-cols-2');
                 attackingType2Details.classList.remove('hidden');
                 attackingType1Details.classList.remove('md:col-span-2'); 
 
                 attackingType2Title.innerHTML = ''; 
-                const icon2Display = createTypeIconElement(currentType2, true, 'title', true); 
+                const icon2Display = createTypeIconElement(currentType2, true, 'title', 'titleIcon'); 
                 if (icon2Display) attackingType2Title.appendChild(icon2Display);
 
-                const attackerData2 = TYPE_CHART_DATA[currentType2];
+                const attackerData2 = TYPE_CHART_DATA[currentType2].attacks; 
                 allTypeKeys.forEach(targetTypeKey => {
-                    const multiplier = attackerData2.attacks[targetTypeKey] === undefined ? 1 : attackerData2.attacks[targetTypeKey];
+                    const multiplier = attackerData2[targetTypeKey] === undefined ? 1 : attackerData2[targetTypeKey];
                     if (Math.abs(multiplier - POGO_SUPER_EFFECTIVE) < epsilon) {
-                        const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', true); 
+                        const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', 'resultList'); 
                         if (icon) superEffectiveAgainstType2Display.appendChild(icon);
                     } else if (Math.abs(multiplier - POGO_NOT_VERY_EFFECTIVE) < epsilon) {
-                        const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', true); 
+                        const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', 'resultList'); 
                         if (icon) notVeryEffectiveAgainstType2Display.appendChild(icon);
                     }
                 });
@@ -580,26 +747,32 @@
                 attackingType2Title.innerHTML = ''; 
             }
 
-            defendingInfoTitle.innerHTML = ''; 
+            defendingInfoTitleEl.innerHTML = ''; 
             const defendingTextSpan = document.createElement('span'); 
-            defendingTextSpan.textContent = 'Defending as';
+            defendingTextSpan.setAttribute('data-translate-key', 'defendingAsTitle');
+            defendingTextSpan.textContent = translations[currentLanguage] && translations[currentLanguage].defendingAsTitle ? translations[currentLanguage].defendingAsTitle : 'Defending as';
             defendingTextSpan.classList.add('title-text');
-            defendingInfoTitle.appendChild(defendingTextSpan);
+            defendingInfoTitleEl.appendChild(defendingTextSpan);
 
-            const defIcon1 = createTypeIconElement(currentType1, true, 'title', true); 
-            if (defIcon1) defendingInfoTitle.appendChild(defIcon1);
+            if (TYPE_CHART_DATA[currentType1]) { // Check before creating icon
+                const defIcon1 = createTypeIconElement(currentType1, true, 'title', 'titleIcon'); 
+                if (defIcon1) defendingInfoTitleEl.appendChild(defIcon1);
+            }
             
-            if (currentType2) { 
-                const defIcon2 = createTypeIconElement(currentType2, true, 'title', true); 
-                if (defIcon2) defendingInfoTitle.appendChild(defIcon2);
+            if (currentType2 && TYPE_CHART_DATA[currentType2]) { // Check before creating icon
+                const defIcon2 = createTypeIconElement(currentType2, true, 'title', 'titleIcon'); 
+                if (defIcon2) defendingInfoTitleEl.appendChild(defIcon2);
 
                 allTypeKeys.forEach(attackingTypeKey => {
-                    const attackingTypeInfo = TYPE_CHART_DATA[attackingTypeKey];
-                    let type1DefMultiplier = attackingTypeInfo.attacks[currentType1] === undefined ? 1 : attackingTypeInfo.attacks[currentType1];
-                    let type2DefMultiplier = attackingTypeInfo.attacks[currentType2] === undefined ? 1 : attackingTypeInfo.attacks[currentType2];
+                    const attackingTypeActual = TYPE_CHART_DATA[attackingTypeKey]; 
+                    if (!attackingTypeActual || !attackingTypeActual.attacks || !TYPE_CHART_DATA[currentType1] || !TYPE_CHART_DATA[currentType2]) return;
+
+
+                    let type1DefMultiplier = attackingTypeActual.attacks[currentType1] === undefined ? 1 : attackingTypeActual.attacks[currentType1];
+                    let type2DefMultiplier = attackingTypeActual.attacks[currentType2] === undefined ? 1 : attackingTypeActual.attacks[currentType2];
                     let finalMultiplier = type1DefMultiplier * type2DefMultiplier;
                     
-                    const icon = createTypeIconElement(attackingTypeKey, true, 'smallResult', true); 
+                    const icon = createTypeIconElement(attackingTypeKey, true, 'smallResult', 'resultList'); 
                     if (!icon) return;
 
                     if (Math.abs(finalMultiplier - (POGO_SUPER_EFFECTIVE * POGO_SUPER_EFFECTIVE)) < epsilon) { 
@@ -614,12 +787,13 @@
                         immuneToDisplay.appendChild(icon);
                     }
                 });
-            } else { 
+            } else if (TYPE_CHART_DATA[currentType1]) { // Single type defense, ensure currentType1 data exists
                 allTypeKeys.forEach(attackingTypeKey => {
-                    const attackingTypeInfo = TYPE_CHART_DATA[attackingTypeKey];
-                    const finalMultiplier = attackingTypeInfo.attacks[currentType1] === undefined ? 1 : attackingTypeInfo.attacks[currentType1];
+                    const attackingTypeActual = TYPE_CHART_DATA[attackingTypeKey];
+                     if (!attackingTypeActual || !attackingTypeActual.attacks) return;
+                    const finalMultiplier = attackingTypeActual.attacks[currentType1] === undefined ? 1 : attackingTypeActual.attacks[currentType1];
                     
-                    const icon = createTypeIconElement(attackingTypeKey, true, 'smallResult', true); 
+                    const icon = createTypeIconElement(attackingTypeKey, true, 'smallResult', 'resultList'); 
                     if (!icon) return;
 
                     if (Math.abs(finalMultiplier - POGO_SUPER_EFFECTIVE) < epsilon) {
@@ -634,16 +808,98 @@
         }
 
         function renderInitialTypes() {
-            Object.keys(TYPE_CHART_DATA).forEach(typeKey => {
-                const icon = createTypeIconElement(typeKey, true, 'large', false); 
-                if (icon) initialTypesDisplay.appendChild(icon);
-            });
+            // Ensure TYPE_CHART_DATA is populated before rendering
+            if (Object.keys(TYPE_CHART_DATA).length === 0) { // Check if TYPE_CHART_DATA is empty
+                console.warn("TYPE_CHART_DATA is empty during renderInitialTypes. Attempting to use BASE_TYPE_DATA for names.");
+                initialTypesDisplay.innerHTML = ''; // Clear previous icons if any
+                Object.keys(BASE_TYPE_DATA).forEach(typeKey => {
+                    // Create a temporary typeInfo with English name from key if TYPE_CHART_DATA is not ready
+                    const tempTypeInfo = { 
+                        ...BASE_TYPE_DATA[typeKey], 
+                        name: typeKey.charAt(0).toUpperCase() + typeKey.slice(1) // Capitalize first letter
+                    };
+                     // Use a temporary function or ensure createTypeIconElement can handle this scenario
+                     const icon = createTypeIconElementFromTemp(typeKey, tempTypeInfo, true, 'large', 'initialList');
+                    if (icon) initialTypesDisplay.appendChild(icon);
+                });
+
+            } else {
+                 initialTypesDisplay.innerHTML = ''; // Clear previous icons if any
+                Object.keys(TYPE_CHART_DATA).forEach(typeKey => {
+                    const icon = createTypeIconElement(typeKey, true, 'large', 'initialList'); 
+                    if (icon) initialTypesDisplay.appendChild(icon);
+                });
+            }
             selectedTypesContainer.innerHTML = '';
-            selectedTypesContainer.appendChild(selectedTypesPlaceholderOriginal.cloneNode(true)); 
+            selectedTypesContainer.appendChild(createPlaceholderElement(currentLanguage)); 
             selectedTypesContainer.classList.remove('has-types'); 
         }
+        
+        // Helper function for initial render if TYPE_CHART_DATA isn't ready (uses typeKey as name)
+        function createTypeIconElementFromTemp(typeKey, typeInfo, isInteractiveOnClick = true, context = 'default', clickOriginContext = 'unknown') {
+             const container = document.createElement('div');
+            container.classList.add('type-icon-container');
+            container.dataset.typeKey = typeKey;
+            container.setAttribute('role', 'button'); 
+            container.setAttribute('tabindex', '0');  
+            container.setAttribute('aria-label', `${typeInfo.name} type`); // Uses passed typeInfo.name
 
-        document.addEventListener('DOMContentLoaded', renderInitialTypes);
+            const img = document.createElement('img');
+            img.src = typeInfo.iconUrl; 
+            img.alt = ""; 
+            img.classList.add('type-icon-img'); 
+            
+            let placeholderSize = "70x25"; 
+            if (context === 'title') {
+                container.classList.add('title-icon'); 
+                placeholderSize = "24x24";
+            } else if (context === 'smallResult') { 
+                container.classList.add('small'); 
+                placeholderSize = "22x22";
+            } else { 
+                container.classList.add('large'); 
+            }
+            
+            img.onerror = function() {
+                this.onerror=null; 
+                this.src = `https://placehold.co/${placeholderSize.split('x')[0]}x${placeholderSize.split('x')[1]}/CCCCCC/FFFFFF?text=?&font=Inter`;
+                this.alt = `${typeInfo.name} type (image error)`;
+            };
+            container.appendChild(img);
+            if (context !== 'title') { 
+                const textSpan = document.createElement('span');
+                textSpan.classList.add('type-icon-text');
+                textSpan.textContent = typeInfo.name; // Uses passed typeInfo.name
+                container.appendChild(textSpan);
+            }
+            if (isInteractiveOnClick) { 
+                container.addEventListener('click', () => {
+                    handleTypeClick(typeKey, clickOriginContext);
+                });
+                container.addEventListener('keydown', (event) => { 
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        handleTypeClick(typeKey, clickOriginContext);
+                    }
+                });
+            }
+            return container;
+        }
+
+        async function initializeApp() {
+            let initialLang = localStorage.getItem('pokemonGoTypeLang') || navigator.language.split('-')[0] || 'en';
+            const langButtons = Array.from(document.querySelectorAll('#language-switcher .lang-switch-button')).map(btn => btn.dataset.lang);
+            
+            if (!langButtons.includes(initialLang)) { // If browser lang (e.g. 'ko-KR') is not in button list
+                 initialLang = 'en'; // Default to English if specific sub-locale not supported by a button
+            }
+            if (initialLang === 'ko') initialLang = 'kor'; // Map 'ko' from browser to 'kor' for our file naming convention
+
+            await setLanguage(initialLang); 
+            updateSelectedTypesDisplay(); 
+        }
+        
+        document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
 </body>
 </html>
