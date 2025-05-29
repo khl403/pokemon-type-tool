@@ -227,28 +227,38 @@
         }
         #language-switcher {
             display: flex;
-            justify-content: flex-end;
+            justify-content: flex-end; 
+            align-items: center; 
+            flex-wrap: wrap; 
             margin-bottom: 1rem;
             gap: 0.5rem; 
         }
-        .lang-switch-button {
-            padding: 0.375rem 0.75rem; 
-            border: 1px solid transparent;
+        .lang-switch-button { 
+            padding: 0.25rem; 
+            border: 2px solid transparent; 
             border-radius: 0.375rem; 
-            font-size: 0.875rem; 
-            font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-            background-color: #e2e8f0; 
-            color: #4a5568; 
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            display: inline-flex; 
+            align-items: center;
+            justify-content: center;
+            background-color: #e2e8f0;
+        }
+        .lang-switch-button img {
+            height: 20px; 
+            width: 30px; /* 국기 너비 고정 */
+            display: block; 
+            object-fit: cover; /* 이미지가 영역을 채우도록, 비율 유지하며 잘릴 수 있음 */
+            border-radius: 2px; /* 국기 이미지 자체에도 약간의 둥근 모서리 */
         }
         .lang-switch-button.active {
-            background-color: #3b82f6; 
-            color: white;
-            border-color: #3b82f6;
+            border-color: #3b82f6; 
+            box-shadow: 0 0 0 2px #3b82f6; 
+            background-color: #DBEAFE; 
         }
         .lang-switch-button:hover:not(.active) {
-            background-color: #cbd5e1; 
+            transform: translateY(-1px);
+            background-color: #cbd5e1;
         }
     </style>
 </head>
@@ -269,12 +279,24 @@
         </div>
 
         <div id="language-switcher">
-            <button class="lang-switch-button" data-lang="en">ENG</button>
-            <button class="lang-switch-button" data-lang="kor">KOR</button>
-            <button class="lang-switch-button" data-lang="ms">MAS</button> 
-            <button class="lang-switch-button" data-lang="de">DEU</button> 
-            <button class="lang-switch-button" data-lang="es">ESP</button> 
-            <button class="lang-switch-button" data-lang="nl">NLD</button> 
+            <span class="lang-switch-button" data-lang="en" role="button" tabindex="0" aria-label="Switch to English">
+                <img src="https://flagcdn.com/h24/us.png" alt="USA Flag for English">
+            </span>
+            <span class="lang-switch-button" data-lang="kor" role="button" tabindex="0" aria-label="Switch to Korean">
+                <img src="https://flagcdn.com/h24/kr.png" alt="South Korea Flag for Korean">
+            </span>
+            <span class="lang-switch-button" data-lang="ms" role="button" tabindex="0" aria-label="Switch to Malay">
+                <img src="https://flagcdn.com/h24/my.png" alt="Malaysia Flag for Malay">
+            </span>
+            <span class="lang-switch-button" data-lang="de" role="button" tabindex="0" aria-label="Switch to German">
+                <img src="https://flagcdn.com/h24/de.png" alt="Germany Flag for German">
+            </span>
+            <span class="lang-switch-button" data-lang="es" role="button" tabindex="0" aria-label="Switch to Spanish">
+                <img src="https://flagcdn.com/h24/es.png" alt="Spain Flag for Spanish">
+            </span>
+            <span class="lang-switch-button" data-lang="nl" role="button" tabindex="0" aria-label="Switch to Dutch">
+                <img src="https://flagcdn.com/h24/nl.png" alt="Netherlands Flag for Dutch">
+            </span>
         </div>
 
         <header class="text-center mb-8">
@@ -463,17 +485,15 @@
 
             if (!langData) {
                 console.warn(`Translations for ${lang} not available or failed to load. Using English as fallback or base keys.`);
-                // Fallback to English if current language failed and English is loaded
                 if (lang !== 'en' && translations['en']) {
-                    applyTranslations('en'); // Recursive call with English
+                    applyTranslations('en'); 
                     return;
                 }
-                // If English also failed or wasn't loaded, use base keys for names
                 TYPE_CHART_DATA = {};
                 Object.keys(BASE_TYPE_DATA).forEach(typeKey => {
                     TYPE_CHART_DATA[typeKey] = {
                         ...BASE_TYPE_DATA[typeKey],
-                        name: typeKey // Use the English key as the name
+                        name: typeKey 
                     };
                 });
             } else {
@@ -481,7 +501,7 @@
                     const key = element.getAttribute('data-translate-key');
                     if (langData[key]) {
                         element.textContent = langData[key];
-                    } else if (translations['en'] && translations['en'][key]) { // Fallback to English for specific missing keys
+                    } else if (translations['en'] && translations['en'][key]) { 
                         element.textContent = translations['en'][key];
                     }
                 });
@@ -506,7 +526,7 @@
         async function setLanguage(lang) {
             let langToLoad = lang;
             if (!supportedLanguages.includes(langToLoad)) {
-                langToLoad = 'en'; // Default to English if lang is not supported
+                langToLoad = 'en'; 
             }
 
             if (!translations[langToLoad]) {
@@ -523,7 +543,6 @@
                     }
                     if (!translations[langToLoad]) { 
                         console.error("Fatal: Could not load any language files. Displaying with default keys.");
-                        // Minimal fallback: use keys as names from BASE_TYPE_DATA
                         TYPE_CHART_DATA = {};
                         Object.keys(BASE_TYPE_DATA).forEach(typeKey => {
                            TYPE_CHART_DATA[typeKey] = { ...BASE_TYPE_DATA[typeKey], name: typeKey };
@@ -531,7 +550,7 @@
                         currentLanguage = 'en'; 
                         document.documentElement.lang = 'en';
                         localStorage.setItem('pokemonGoTypeLang', 'en');
-                        applyTranslations('en'); // Try to apply UI text with English keys
+                        applyTranslations('en'); 
                         return;
                     }
                 }
@@ -539,7 +558,6 @@
             currentLanguage = langToLoad;
             document.documentElement.lang = currentLanguage;
             localStorage.setItem('pokemonGoTypeLang', currentLanguage);
-            // Update active state for buttons
             document.querySelectorAll('.lang-switch-button').forEach(button => {
                 button.classList.toggle('active', button.dataset.lang === currentLanguage);
             });
@@ -558,34 +576,40 @@
             if (!typeInfo || typeof typeInfo.name === 'undefined' || typeof typeInfo.iconUrl === 'undefined') { 
                  console.error("Type info, name, or iconUrl not found for key:", typeKey, "in lang:", currentLanguage, typeInfo);
                  const errorContainer = document.createElement('div');
-                 errorContainer.textContent = `Err:${typeKey}`; // Short error
+                 errorContainer.textContent = `Err:${typeKey}`; 
                  errorContainer.style.color = 'red';
                  errorContainer.style.padding = '0.1rem';
                  errorContainer.style.fontSize = '0.7rem';
                  return errorContainer;
             }
 
-            const container = document.createElement('div');
+            const container = document.createElement('span'); 
             container.classList.add('type-icon-container');
-            container.dataset.typeKey = typeKey;
-            container.setAttribute('role', 'button'); 
-            container.setAttribute('tabindex', '0');  
-            container.setAttribute('aria-label', `${typeInfo.name} type`);
+            if (context !== 'title') {
+                container.dataset.typeKey = typeKey;
+                container.setAttribute('role', 'button'); 
+                container.setAttribute('tabindex', '0');  
+                container.setAttribute('aria-label', `${typeInfo.name} type`);
+            }
+
 
             const img = document.createElement('img');
             img.src = typeInfo.iconUrl; 
-            img.alt = ""; 
+            img.alt = (context === 'title') ? `${typeInfo.name} type icon` : ""; 
             img.classList.add('type-icon-img'); 
             
             let placeholderSize = "70x25"; 
             if (context === 'title') {
                 container.classList.add('title-icon'); 
+                img.classList.add('title-icon-img'); 
                 placeholderSize = "24x24";
             } else if (context === 'smallResult') { 
                 container.classList.add('small'); 
+                img.classList.add('small-icon-img');
                 placeholderSize = "22x22";
             } else { 
                 container.classList.add('large'); 
+                img.classList.add('large-icon-img');
             }
             
             img.onerror = function() {
@@ -684,11 +708,11 @@
             attackingTextSpan.classList.add('title-text'); 
             attackingMainTitleEl.appendChild(attackingTextSpan);
 
-            if (selectedTypes.length > 0 && TYPE_CHART_DATA[selectedTypes[0]]) { // Check if type data exists
+            if (selectedTypes.length > 0 && TYPE_CHART_DATA[selectedTypes[0]]) { 
                 const titleIcon1 = createTypeIconElement(selectedTypes[0], true, 'title', 'titleIcon'); 
                 if (titleIcon1) attackingMainTitleEl.appendChild(titleIcon1);
             }
-            if (selectedTypes.length > 1 && TYPE_CHART_DATA[selectedTypes[1]]) { // Check if type data exists
+            if (selectedTypes.length > 1 && TYPE_CHART_DATA[selectedTypes[1]]) { 
                 const titleIcon2 = createTypeIconElement(selectedTypes[1], true, 'title', 'titleIcon'); 
                 if (titleIcon2) attackingMainTitleEl.appendChild(titleIcon2);
             }
@@ -754,19 +778,18 @@
             defendingTextSpan.classList.add('title-text');
             defendingInfoTitleEl.appendChild(defendingTextSpan);
 
-            if (TYPE_CHART_DATA[currentType1]) { // Check before creating icon
+            if (TYPE_CHART_DATA[currentType1]) {
                 const defIcon1 = createTypeIconElement(currentType1, true, 'title', 'titleIcon'); 
                 if (defIcon1) defendingInfoTitleEl.appendChild(defIcon1);
             }
             
-            if (currentType2 && TYPE_CHART_DATA[currentType2]) { // Check before creating icon
+            if (currentType2 && TYPE_CHART_DATA[currentType2]) { 
                 const defIcon2 = createTypeIconElement(currentType2, true, 'title', 'titleIcon'); 
                 if (defIcon2) defendingInfoTitleEl.appendChild(defIcon2);
 
                 allTypeKeys.forEach(attackingTypeKey => {
                     const attackingTypeActual = TYPE_CHART_DATA[attackingTypeKey]; 
                     if (!attackingTypeActual || !attackingTypeActual.attacks || !TYPE_CHART_DATA[currentType1] || !TYPE_CHART_DATA[currentType2]) return;
-
 
                     let type1DefMultiplier = attackingTypeActual.attacks[currentType1] === undefined ? 1 : attackingTypeActual.attacks[currentType1];
                     let type2DefMultiplier = attackingTypeActual.attacks[currentType2] === undefined ? 1 : attackingTypeActual.attacks[currentType2];
@@ -787,7 +810,7 @@
                         immuneToDisplay.appendChild(icon);
                     }
                 });
-            } else if (TYPE_CHART_DATA[currentType1]) { // Single type defense, ensure currentType1 data exists
+            } else if (TYPE_CHART_DATA[currentType1]) { 
                 allTypeKeys.forEach(attackingTypeKey => {
                     const attackingTypeActual = TYPE_CHART_DATA[attackingTypeKey];
                      if (!attackingTypeActual || !attackingTypeActual.attacks) return;
@@ -808,23 +831,17 @@
         }
 
         function renderInitialTypes() {
-            // Ensure TYPE_CHART_DATA is populated before rendering
-            if (Object.keys(TYPE_CHART_DATA).length === 0) { // Check if TYPE_CHART_DATA is empty
-                console.warn("TYPE_CHART_DATA is empty during renderInitialTypes. Attempting to use BASE_TYPE_DATA for names.");
-                initialTypesDisplay.innerHTML = ''; // Clear previous icons if any
+            if (Object.keys(TYPE_CHART_DATA).length === 0) {
+                console.warn("TYPE_CHART_DATA is empty during renderInitialTypes. Using BASE_TYPE_DATA for names.");
+                initialTypesDisplay.innerHTML = ''; 
                 Object.keys(BASE_TYPE_DATA).forEach(typeKey => {
-                    // Create a temporary typeInfo with English name from key if TYPE_CHART_DATA is not ready
-                    const tempTypeInfo = { 
-                        ...BASE_TYPE_DATA[typeKey], 
-                        name: typeKey.charAt(0).toUpperCase() + typeKey.slice(1) // Capitalize first letter
-                    };
-                     // Use a temporary function or ensure createTypeIconElement can handle this scenario
+                    const tempTypeInfo = { ...BASE_TYPE_DATA[typeKey], name: typeKey.charAt(0).toUpperCase() + typeKey.slice(1) }; 
                      const icon = createTypeIconElementFromTemp(typeKey, tempTypeInfo, true, 'large', 'initialList');
                     if (icon) initialTypesDisplay.appendChild(icon);
                 });
 
             } else {
-                 initialTypesDisplay.innerHTML = ''; // Clear previous icons if any
+                 initialTypesDisplay.innerHTML = ''; 
                 Object.keys(TYPE_CHART_DATA).forEach(typeKey => {
                     const icon = createTypeIconElement(typeKey, true, 'large', 'initialList'); 
                     if (icon) initialTypesDisplay.appendChild(icon);
@@ -835,29 +852,34 @@
             selectedTypesContainer.classList.remove('has-types'); 
         }
         
-        // Helper function for initial render if TYPE_CHART_DATA isn't ready (uses typeKey as name)
         function createTypeIconElementFromTemp(typeKey, typeInfo, isInteractiveOnClick = true, context = 'default', clickOriginContext = 'unknown') {
-             const container = document.createElement('div');
+             const container = document.createElement('span'); // Changed to span
             container.classList.add('type-icon-container');
-            container.dataset.typeKey = typeKey;
-            container.setAttribute('role', 'button'); 
-            container.setAttribute('tabindex', '0');  
-            container.setAttribute('aria-label', `${typeInfo.name} type`); // Uses passed typeInfo.name
+            if (context !== 'title') {
+                container.dataset.typeKey = typeKey;
+                container.setAttribute('role', 'button'); 
+                container.setAttribute('tabindex', '0');  
+                container.setAttribute('aria-label', `${typeInfo.name} type`);
+            }
+
 
             const img = document.createElement('img');
             img.src = typeInfo.iconUrl; 
-            img.alt = ""; 
+            img.alt = (context === 'title') ? `${typeInfo.name} type icon` : ""; 
             img.classList.add('type-icon-img'); 
             
             let placeholderSize = "70x25"; 
             if (context === 'title') {
                 container.classList.add('title-icon'); 
+                img.classList.add('title-icon-img');
                 placeholderSize = "24x24";
             } else if (context === 'smallResult') { 
                 container.classList.add('small'); 
+                img.classList.add('small-icon-img');
                 placeholderSize = "22x22";
             } else { 
                 container.classList.add('large'); 
+                img.classList.add('large-icon-img');
             }
             
             img.onerror = function() {
@@ -869,7 +891,7 @@
             if (context !== 'title') { 
                 const textSpan = document.createElement('span');
                 textSpan.classList.add('type-icon-text');
-                textSpan.textContent = typeInfo.name; // Uses passed typeInfo.name
+                textSpan.textContent = typeInfo.name;
                 container.appendChild(textSpan);
             }
             if (isInteractiveOnClick) { 
@@ -890,10 +912,10 @@
             let initialLang = localStorage.getItem('pokemonGoTypeLang') || navigator.language.split('-')[0] || 'en';
             const langButtons = Array.from(document.querySelectorAll('#language-switcher .lang-switch-button')).map(btn => btn.dataset.lang);
             
-            if (!langButtons.includes(initialLang)) { // If browser lang (e.g. 'ko-KR') is not in button list
-                 initialLang = 'en'; // Default to English if specific sub-locale not supported by a button
+            if (!langButtons.includes(initialLang)) { 
+                 initialLang = 'en'; 
             }
-            if (initialLang === 'ko') initialLang = 'kor'; // Map 'ko' from browser to 'kor' for our file naming convention
+            if (initialLang === 'ko') initialLang = 'kor'; 
 
             await setLanguage(initialLang); 
             updateSelectedTypesDisplay(); 
