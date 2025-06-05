@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en"> <head>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-T4RRZDJW');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RN6803EFGZ"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -19,12 +24,14 @@
     <meta name="google-adsense-account" content="ca-pub-3182004757080506">
     <meta name="description" content="An easy-to-use Pokémon Go type matchup calculator to find strengths, weaknesses, and resistances for your battles.">
 
+    <!-- Open Graph / Facebook Card Meta Tags -->
     <meta property="og:title" content="Pokémon Go Type Matchup Calculator">
     <meta property="og:description" content="Calculate Pokémon type matchups for Pokémon Go. Find strengths, weaknesses, and resistances.">
     <meta property="og:image" content="https://raw.githubusercontent.com/khl403/pokemon-type-tool/main/images/thumbnail.png"> 
     <meta property="og:url" content="https://poke-type.com">
     <meta property="og:type" content="website">
 
+    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Pokémon Go Type Matchup Calculator">
     <meta name="twitter:description" content="Calculate Pokémon type matchups for Pokémon Go. Find strengths, weaknesses, and resistances.">
@@ -246,10 +253,10 @@
         }
         .lang-switch-button img {
             height: 20px; 
-            width: 30px; /* 국기 너비 고정 */
+            width: 30px; 
             display: block; 
-            object-fit: cover; /* 이미지가 영역을 채우도록, 비율 유지하며 잘릴 수 있음 */
-            border-radius: 2px; /* 국기 이미지 자체에도 약간의 둥근 모서리 */
+            object-fit: cover; 
+            border-radius: 2px; 
         }
         .lang-switch-button.active {
             border-color: #3b82f6; 
@@ -398,27 +405,29 @@
 
         const POGO_SUPER_EFFECTIVE = 1.6;
         const POGO_NOT_VERY_EFFECTIVE = 0.625;
-        const POGO_IMMUNITY = 0.39; 
+        const POGO_IMMUNITY = 0.391; // Based on GamePress chart (e.g., Normal vs Ghost attack)
 
+        // Data based on pogo.gamepress.gg/pokemon-go-type-chart
+        // Structure: AttackingType.attacks.DefendingType = Multiplier
         const BASE_TYPE_DATA = {
             Normal:   { iconUrl: `${GITHUB_IMAGE_PATH}normal.svg`,   attacks: { Rock: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Ghost: POGO_IMMUNITY } },
-            Fire:     { iconUrl: `${GITHUB_IMAGE_PATH}fire.svg`,     attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Bug: POGO_SUPER_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_SUPER_EFFECTIVE } },
-            Water:    { iconUrl: `${GITHUB_IMAGE_PATH}water.svg`,    attacks: { Fire: POGO_SUPER_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_SUPER_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE } },
-            Grass:    { iconUrl: `${GITHUB_IMAGE_PATH}grass.svg`,    attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Water: POGO_SUPER_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_SUPER_EFFECTIVE, Flying: POGO_NOT_VERY_EFFECTIVE, Bug: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
-            Electric: { iconUrl: `${GITHUB_IMAGE_PATH}electric.svg`, attacks: { Water: POGO_SUPER_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Electric: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_IMMUNITY, Flying: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE } },
-            Ice:      { iconUrl: `${GITHUB_IMAGE_PATH}ice.svg`,      attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Ice: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_SUPER_EFFECTIVE, Flying: POGO_SUPER_EFFECTIVE, Dragon: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
-            Fighting: { iconUrl: `${GITHUB_IMAGE_PATH}fighting.svg`, attacks: { Normal: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_NOT_VERY_EFFECTIVE, Psychic: POGO_NOT_VERY_EFFECTIVE, Bug: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Ghost: POGO_IMMUNITY, Steel: POGO_SUPER_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE } },
-            Poison:   { iconUrl: `${GITHUB_IMAGE_PATH}poison.svg`,   attacks: { Grass: POGO_SUPER_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Ghost: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_IMMUNITY, Fairy: POGO_SUPER_EFFECTIVE } }, 
-            Ground:   { iconUrl: `${GITHUB_IMAGE_PATH}ground.svg`,   attacks: { Fire: POGO_SUPER_EFFECTIVE, Electric: POGO_SUPER_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_SUPER_EFFECTIVE, Flying: POGO_IMMUNITY, Bug: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Steel: POGO_SUPER_EFFECTIVE } },
-            Flying:   { iconUrl: `${GITHUB_IMAGE_PATH}flying.svg`,   attacks: { Grass: POGO_SUPER_EFFECTIVE, Electric: POGO_NOT_VERY_EFFECTIVE, Fighting: POGO_SUPER_EFFECTIVE, Bug: POGO_SUPER_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
+            Fire:     { iconUrl: `${GITHUB_IMAGE_PATH}fire.svg`,     attacks: { Bug: POGO_SUPER_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Steel: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE, Fire: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE } },
+            Water:    { iconUrl: `${GITHUB_IMAGE_PATH}water.svg`,    attacks: { Fire: POGO_SUPER_EFFECTIVE, Ground: POGO_SUPER_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE } },
+            Grass:    { iconUrl: `${GITHUB_IMAGE_PATH}grass.svg`,    attacks: { Ground: POGO_SUPER_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Water: POGO_SUPER_EFFECTIVE, Bug: POGO_NOT_VERY_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE, Fire: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
+            Electric: { iconUrl: `${GITHUB_IMAGE_PATH}electric.svg`, attacks: { Flying: POGO_SUPER_EFFECTIVE, Water: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE, Electric: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_IMMUNITY } },
+            Ice:      { iconUrl: `${GITHUB_IMAGE_PATH}ice.svg`,      attacks: { Dragon: POGO_SUPER_EFFECTIVE, Flying: POGO_SUPER_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Ground: POGO_SUPER_EFFECTIVE, Fire: POGO_NOT_VERY_EFFECTIVE, Ice: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE } },
+            Fighting: { iconUrl: `${GITHUB_IMAGE_PATH}fighting.svg`, attacks: { Dark: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Normal: POGO_SUPER_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Steel: POGO_SUPER_EFFECTIVE, Bug: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Psychic: POGO_NOT_VERY_EFFECTIVE, Ghost: POGO_IMMUNITY } },
+            Poison:   { iconUrl: `${GITHUB_IMAGE_PATH}poison.svg`,   attacks: { Grass: POGO_SUPER_EFFECTIVE, Fairy: POGO_SUPER_EFFECTIVE, Ghost: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_IMMUNITY } },
+            Ground:   { iconUrl: `${GITHUB_IMAGE_PATH}ground.svg`,   attacks: { Electric: POGO_SUPER_EFFECTIVE, Fire: POGO_SUPER_EFFECTIVE, Poison: POGO_SUPER_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Steel: POGO_SUPER_EFFECTIVE, Bug: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_IMMUNITY } },
+            Flying:   { iconUrl: `${GITHUB_IMAGE_PATH}flying.svg`,   attacks: { Bug: POGO_SUPER_EFFECTIVE, Fighting: POGO_SUPER_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Electric: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
             Psychic:  { iconUrl: `${GITHUB_IMAGE_PATH}psychic.svg`,  attacks: { Fighting: POGO_SUPER_EFFECTIVE, Poison: POGO_SUPER_EFFECTIVE, Psychic: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Dark: POGO_IMMUNITY } },
-            Bug:      { iconUrl: `${GITHUB_IMAGE_PATH}bug.svg`,      attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Fighting: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_NOT_VERY_EFFECTIVE, Psychic: POGO_SUPER_EFFECTIVE, Ghost: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE, Dark: POGO_SUPER_EFFECTIVE } },
-            Rock:     { iconUrl: `${GITHUB_IMAGE_PATH}rock.svg`,     attacks: { Fire: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Fighting: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_SUPER_EFFECTIVE, Bug: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
-            Ghost:    { iconUrl: `${GITHUB_IMAGE_PATH}ghost.svg`,    attacks: { Normal: POGO_IMMUNITY, Psychic: POGO_SUPER_EFFECTIVE, Ghost: POGO_SUPER_EFFECTIVE, Dark: POGO_NOT_VERY_EFFECTIVE } },
+            Bug:      { iconUrl: `${GITHUB_IMAGE_PATH}bug.svg`,      attacks: { Dark: POGO_SUPER_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Psychic: POGO_SUPER_EFFECTIVE, Fighting: POGO_NOT_VERY_EFFECTIVE, Fire: POGO_NOT_VERY_EFFECTIVE, Flying: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE, Ghost: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
+            Rock:     { iconUrl: `${GITHUB_IMAGE_PATH}rock.svg`,     attacks: { Bug: POGO_SUPER_EFFECTIVE, Fire: POGO_SUPER_EFFECTIVE, Flying: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Fighting: POGO_NOT_VERY_EFFECTIVE, Ground: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } },
+            Ghost:    { iconUrl: `${GITHUB_IMAGE_PATH}ghost.svg`,    attacks: { Ghost: POGO_SUPER_EFFECTIVE, Psychic: POGO_SUPER_EFFECTIVE, Dark: POGO_NOT_VERY_EFFECTIVE, Normal: POGO_IMMUNITY } },
             Dragon:   { name: "Dragon",   iconUrl: `${GITHUB_IMAGE_PATH}dragon.svg`,   attacks: { Dragon: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_IMMUNITY } },
-            Steel:    { name: "Steel",    iconUrl: `${GITHUB_IMAGE_PATH}steel.svg`,    attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE, Electric: POGO_NOT_VERY_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_SUPER_EFFECTIVE } },
-            Dark:     { name: "Dark",     iconUrl: `${GITHUB_IMAGE_PATH}dark.svg`,     attacks: { Fighting: POGO_NOT_VERY_EFFECTIVE, Psychic: POGO_SUPER_EFFECTIVE, Ghost: POGO_SUPER_EFFECTIVE, Dark: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE } },
-            Fairy:    { name: "Fairy",    iconUrl: `${GITHUB_IMAGE_PATH}fairy.svg`,    attacks: { Fire: POGO_NOT_VERY_EFFECTIVE, Fighting: POGO_SUPER_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Dragon: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Dark: POGO_SUPER_EFFECTIVE } }
+            Steel:    { name: "Steel",    iconUrl: `${GITHUB_IMAGE_PATH}steel.svg`,    attacks: { Fairy: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Electric: POGO_NOT_VERY_EFFECTIVE, Fire: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE } },
+            Dark:     { name: "Dark",     iconUrl: `${GITHUB_IMAGE_PATH}dark.svg`,     attacks: { Ghost: POGO_SUPER_EFFECTIVE, Psychic: POGO_SUPER_EFFECTIVE, Dark: POGO_NOT_VERY_EFFECTIVE, Fighting: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE } }, // Corrected Dark vs Fighting
+            Fairy:    { name: "Fairy",    iconUrl: `${GITHUB_IMAGE_PATH}fairy.svg`,    attacks: { Dark: POGO_SUPER_EFFECTIVE, Dragon: POGO_SUPER_EFFECTIVE, Fighting: POGO_SUPER_EFFECTIVE, Fire: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } }
         };
 
         let currentLanguage = 'en'; 
@@ -461,9 +470,8 @@
         let selectedTypesPlaceholderOriginal = createPlaceholderElement(); 
 
         let selectedTypes = []; 
-        const epsilon = 0.00001; 
+        const epsilon = 0.0001; 
         const supportedLanguages = ['en', 'kor', 'ms', 'de', 'es', 'nl'];
-
 
         async function fetchTranslations(lang) {
             const filename = `${lang}.json`;
@@ -726,7 +734,10 @@
                 if (icon1Display) attackingType1Title.appendChild(icon1Display);
                 
                 const attackerData1 = TYPE_CHART_DATA[currentType1].attacks; 
-                allTypeKeys.forEach(targetTypeKey => {
+                allTypeKeys.forEach(targetTypeKey => { 
+                    const defendingTypeInfo = TYPE_CHART_DATA[targetTypeKey];
+                    if (!defendingTypeInfo) return; 
+
                     const multiplier = attackerData1[targetTypeKey] === undefined ? 1 : attackerData1[targetTypeKey];
                     if (Math.abs(multiplier - POGO_SUPER_EFFECTIVE) < epsilon) {
                         const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', 'resultList'); 
@@ -753,7 +764,10 @@
                 if (icon2Display) attackingType2Title.appendChild(icon2Display);
 
                 const attackerData2 = TYPE_CHART_DATA[currentType2].attacks; 
-                allTypeKeys.forEach(targetTypeKey => {
+                allTypeKeys.forEach(targetTypeKey => { 
+                    const defendingTypeInfo = TYPE_CHART_DATA[targetTypeKey];
+                    if (!defendingTypeInfo) return;
+
                     const multiplier = attackerData2[targetTypeKey] === undefined ? 1 : attackerData2[targetTypeKey];
                     if (Math.abs(multiplier - POGO_SUPER_EFFECTIVE) < epsilon) {
                         const icon = createTypeIconElement(targetTypeKey, true, 'smallResult', 'resultList'); 
@@ -787,12 +801,12 @@
                 const defIcon2 = createTypeIconElement(currentType2, true, 'title', 'titleIcon'); 
                 if (defIcon2) defendingInfoTitleEl.appendChild(defIcon2);
 
-                allTypeKeys.forEach(attackingTypeKey => {
+                allTypeKeys.forEach(attackingTypeKey => { 
                     const attackingTypeActual = TYPE_CHART_DATA[attackingTypeKey]; 
                     if (!attackingTypeActual || !attackingTypeActual.attacks || !TYPE_CHART_DATA[currentType1] || !TYPE_CHART_DATA[currentType2]) return;
 
-                    let type1DefMultiplier = attackingTypeActual.attacks[currentType1] === undefined ? 1 : attackingTypeActual.attacks[currentType1];
-                    let type2DefMultiplier = attackingTypeActual.attacks[currentType2] === undefined ? 1 : attackingTypeActual.attacks[currentType2];
+                    let type1DefMultiplier = BASE_TYPE_DATA[attackingTypeKey].attacks[currentType1] === undefined ? 1 : BASE_TYPE_DATA[attackingTypeKey].attacks[currentType1];
+                    let type2DefMultiplier = BASE_TYPE_DATA[attackingTypeKey].attacks[currentType2] === undefined ? 1 : BASE_TYPE_DATA[attackingTypeKey].attacks[currentType2];
                     let finalMultiplier = type1DefMultiplier * type2DefMultiplier;
                     
                     const icon = createTypeIconElement(attackingTypeKey, true, 'smallResult', 'resultList'); 
@@ -802,19 +816,19 @@
                         ultraWeakToDisplay.appendChild(icon);
                     } else if (Math.abs(finalMultiplier - POGO_SUPER_EFFECTIVE) < epsilon) { 
                         weakToDisplay.appendChild(icon);
-                    } else if (Math.abs(finalMultiplier - POGO_NOT_VERY_EFFECTIVE) < epsilon || (finalMultiplier > 0.62 && finalMultiplier < 0.63) ) { 
+                    } else if (Math.abs(finalMultiplier - POGO_NOT_VERY_EFFECTIVE) < epsilon ) { 
                         resistantToDisplay.appendChild(icon);
                     } else if (Math.abs(finalMultiplier - (POGO_NOT_VERY_EFFECTIVE * POGO_NOT_VERY_EFFECTIVE)) < epsilon ) { 
                         ultraResistantToDisplay.appendChild(icon);
-                    } else if (Math.abs(finalMultiplier - POGO_IMMUNITY) < epsilon || (finalMultiplier < POGO_IMMUNITY + epsilon && finalMultiplier > 0) ) { 
+                    } else if (Math.abs(finalMultiplier - POGO_IMMUNITY) < epsilon || (finalMultiplier < POGO_IMMUNITY + epsilon && finalMultiplier > 0.001) ) { 
                         immuneToDisplay.appendChild(icon);
                     }
                 });
             } else if (TYPE_CHART_DATA[currentType1]) { 
-                allTypeKeys.forEach(attackingTypeKey => {
+                allTypeKeys.forEach(attackingTypeKey => { 
                     const attackingTypeActual = TYPE_CHART_DATA[attackingTypeKey];
                      if (!attackingTypeActual || !attackingTypeActual.attacks) return;
-                    const finalMultiplier = attackingTypeActual.attacks[currentType1] === undefined ? 1 : attackingTypeActual.attacks[currentType1];
+                    const finalMultiplier = BASE_TYPE_DATA[attackingTypeKey].attacks[currentType1] === undefined ? 1 : BASE_TYPE_DATA[attackingTypeKey].attacks[currentType1];
                     
                     const icon = createTypeIconElement(attackingTypeKey, true, 'smallResult', 'resultList'); 
                     if (!icon) return;
@@ -853,7 +867,7 @@
         }
         
         function createTypeIconElementFromTemp(typeKey, typeInfo, isInteractiveOnClick = true, context = 'default', clickOriginContext = 'unknown') {
-             const container = document.createElement('span'); // Changed to span
+             const container = document.createElement('span'); 
             container.classList.add('type-icon-container');
             if (context !== 'title') {
                 container.dataset.typeKey = typeKey;
@@ -861,7 +875,6 @@
                 container.setAttribute('tabindex', '0');  
                 container.setAttribute('aria-label', `${typeInfo.name} type`);
             }
-
 
             const img = document.createElement('img');
             img.src = typeInfo.iconUrl; 
