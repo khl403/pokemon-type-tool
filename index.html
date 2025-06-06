@@ -405,10 +405,9 @@
 
         const POGO_SUPER_EFFECTIVE = 1.6;
         const POGO_NOT_VERY_EFFECTIVE = 0.625;
-        const POGO_IMMUNITY = 0.391; // Based on GamePress chart (e.g., Normal vs Ghost attack)
+        const POGO_IMMUNITY = 0.390625; // More precise value for stacking, as per GamePress
 
-        // Data based on pogo.gamepress.gg/pokemon-go-type-chart
-        // Structure: AttackingType.attacks.DefendingType = Multiplier
+        // Corrected BASE_TYPE_DATA based on pogo.gamepress.gg (Attacker -> Defender)
         const BASE_TYPE_DATA = {
             Normal:   { iconUrl: `${GITHUB_IMAGE_PATH}normal.svg`,   attacks: { Rock: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Ghost: POGO_IMMUNITY } },
             Fire:     { iconUrl: `${GITHUB_IMAGE_PATH}fire.svg`,     attacks: { Bug: POGO_SUPER_EFFECTIVE, Grass: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Steel: POGO_SUPER_EFFECTIVE, Dragon: POGO_NOT_VERY_EFFECTIVE, Fire: POGO_NOT_VERY_EFFECTIVE, Rock: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE } },
@@ -426,7 +425,7 @@
             Ghost:    { iconUrl: `${GITHUB_IMAGE_PATH}ghost.svg`,    attacks: { Ghost: POGO_SUPER_EFFECTIVE, Psychic: POGO_SUPER_EFFECTIVE, Dark: POGO_NOT_VERY_EFFECTIVE, Normal: POGO_IMMUNITY } },
             Dragon:   { name: "Dragon",   iconUrl: `${GITHUB_IMAGE_PATH}dragon.svg`,   attacks: { Dragon: POGO_SUPER_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_IMMUNITY } },
             Steel:    { name: "Steel",    iconUrl: `${GITHUB_IMAGE_PATH}steel.svg`,    attacks: { Fairy: POGO_SUPER_EFFECTIVE, Ice: POGO_SUPER_EFFECTIVE, Rock: POGO_SUPER_EFFECTIVE, Electric: POGO_NOT_VERY_EFFECTIVE, Fire: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE, Water: POGO_NOT_VERY_EFFECTIVE } },
-            Dark:     { name: "Dark",     iconUrl: `${GITHUB_IMAGE_PATH}dark.svg`,     attacks: { Ghost: POGO_SUPER_EFFECTIVE, Psychic: POGO_SUPER_EFFECTIVE, Dark: POGO_NOT_VERY_EFFECTIVE, Fighting: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE } }, // Corrected Dark vs Fighting
+            Dark:     { name: "Dark",     iconUrl: `${GITHUB_IMAGE_PATH}dark.svg`,     attacks: { Ghost: POGO_SUPER_EFFECTIVE, Psychic: POGO_SUPER_EFFECTIVE, Dark: POGO_NOT_VERY_EFFECTIVE, Fighting: POGO_NOT_VERY_EFFECTIVE, Fairy: POGO_NOT_VERY_EFFECTIVE } },
             Fairy:    { name: "Fairy",    iconUrl: `${GITHUB_IMAGE_PATH}fairy.svg`,    attacks: { Dark: POGO_SUPER_EFFECTIVE, Dragon: POGO_SUPER_EFFECTIVE, Fighting: POGO_SUPER_EFFECTIVE, Fire: POGO_NOT_VERY_EFFECTIVE, Poison: POGO_NOT_VERY_EFFECTIVE, Steel: POGO_NOT_VERY_EFFECTIVE } }
         };
 
